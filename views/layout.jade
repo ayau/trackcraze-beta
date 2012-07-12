@@ -1,6 +1,52 @@
-!!!
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+!!! 5
+html(style='background: url("/images/blur_bg.png") no-repeat center center fixed;')
+	head
+		//if lt IE 9
+			script (src="/js/html5shiv.js")
+		title= title
+		link(rel='stylesheet', href='/css/style.css')
+		meta(name='KEYWORDS', content='trackcraze,fitness,tracking,gym,workout,log,exercise,record,share')
+		meta(name='Description', content="Trackcraze lets you follow other people's workout, record your own, and share it with others. Track your friends, your idol, and most importantly, yourself. Make fitness simple, customizable and motivating.")
+		meta(charset="UTF-8")
+	body(style='margin:0px')
+		header(style='background: rgba(0,0,0,0.3); height:160px; width:100%')
+			center(style='position:relative; top:10px')
+				a(style='text-decoration:none', href='/program/')
+					p#header_title(style='margin-left:30px') trackCraze
+					p(style='display:inline; color:white; font-size:12px; text-shadow: rgba(0,0,0,0.2) 1px 1px 1px;') BETA
+				input#search_enter.input(type='text', placeholder='Search trackCraze', autocomplete='off', style='display:block')
+				a.header_link(style='position:relative; top:-120px; left:250px;', onclick='FB.logout()') Log out
+		div#fb-root
+		#container
+			nav#nav_left
+				div 
+					a
+						img(src='/images/profile.png')
+						p Profile
+				div
+					a
+						img(src='/images/record.png')
+						p Record
+				div
+					a
+						img(src='/images/diary.png')
+						p Diary
+				div
+					a
+						p Tracking: 45
+				div
+					a
+						p Tracked by: 52
+			section#content
+				section#profile_header
+					img.medium_pic(src='/images/alex_pic.jpg')
+					div(style='float:left; margin-left:10px')
+						h3(style='padding:10px 0px; margin:0px; text-shadow:none') Alex
+						p CEO and Co-Founder of trackCraze. Casual gym goer
+						#profile_info(style='margin-top:10px')
+							img(src='/images/birthday.png', style='float:left; width:15px;position:relative; top:-3px; opacity:0.7')
+							p(style='float:left; margin-left:10px') 03/12/91
+				!=body
+		#button_container
+			#program_delete
+			#program_edit
