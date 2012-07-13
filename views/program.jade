@@ -3,11 +3,13 @@ article#program(style='margin-top:20px')
 block scripts
 	script(type='text/javascript', src='/js/jquery.min.js')
 	script(type='text/javascript', src='/js/underscore.js')
+	script(type='text/javascript', src='/js/jade.js')
 	script(type='text/javascript', src='/js/backbone.js')
+	script(type='text/javascript', src='/js/views/program/view.js')
 	script(type='text/template', id='program_view')
-		p#program_name Summer 2012 workout program
+		p#program_name <%= name %>
 		article(style='margin-top:20px')
-			p(style='font-size:24px;margin:10px 0px 10px 20px') Chest
+			p(style='font-size:24px;margin:10px 0px 10px 20px') <%= splits[0]['name'] %>
 			table.workout_table
 				tr
 					td.workout_exercise(rowspan='2') Incline bench press
@@ -62,5 +64,3 @@ block scripts
 					td.workout_exercise(rowspan='2') Barbell front raise
 					td.workout_set 50lbs x 6 (2 sets)
 					td.workout_comment(rowspan='2')
-
-	script(type='text/javascript', src='/js/views/program/view.js')
