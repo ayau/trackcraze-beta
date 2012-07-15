@@ -7,5 +7,8 @@
     , "jade": ">= 0.0.1"
     , "sass": "0.5.x"
     , "backbone": "0.9.x"
+  },
+  "engines": {
+    "node": "0.8.x"
   }
 }
