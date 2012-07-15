@@ -1,21 +1,12 @@
-
-/*
- * GET home page.
- */
-
+//GET home page.
 exports.index = function(req, res){
   res.render('index', { title: 'Express' })
 };
 
-
-
-/*
- * GET program page.
- */
-
-exports.program = function(req, res){
+//GET program page
+exports.programs = function(req, res){
 	var id = req.params.id;
 	//console.log(id);
 	//res.send('user ' + req.params.id);
-	res.render('program', { title: 'Express', layout: 'layout' });
+	res.render('programs', { title: 'Express', layout: 'layout' });
 };

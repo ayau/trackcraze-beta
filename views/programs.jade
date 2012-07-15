@@ -1,0 +1,30 @@
+article#program(style='margin-top:20px') 
+
+
+	script(type='text/javascript', src='/js/lib/jquery.min.js')
+	script(type='text/javascript', src='/js/lib/underscore.js')
+	script(type='text/javascript', src='/js/lib/backbone.js')
+	script(type='text/javascript', src='/js/views/programs/view.js')
+	script(type='text/template', id='program_view')
+		p#program_name <%= name %>
+		<% for (i = 0; i< splits.length; i++){ %>
+		article(style='margin-top:20px')
+			p(style='font-size:24px;margin:10px 0px 10px 20px') <%= splits[i]['name'] %>
+			table.workout_table
+				<% for (j = 0; j< splits[i]['weights'].length; j++){ %>
+				tr
+					| <td class='workout_exercise' rowspan= <%= splits[i]['weights'][j]['sets'].length %> > <%= splits[i]['weights'][j]['name'] %></td>
+					td.workout_set <%= splits[i]['weights'][j]['sets'][0]['weight'] %> <%= splits[i]['weights'][j]['sets'][0]['lbkg'] %> x <%= splits[i]['weights'][j]['sets'][0]['rep'] %> (<%= splits[i]['weights'][j]['sets'][0]['set'] %> sets)
+					| <td class='workout_comment' rowspan= <%= splits[i]['weights'][j]['sets'].length %> > <%= splits[i]['weights'][j]['comment'] %></td>
+				<% for (k = 1; k< splits[i]['weights'][j]['sets'].length; k++){ %>
+				tr
+					td.workout_set <%= splits[i]['weights'][j]['sets'][k]['weight'] %> <%= splits[i]['weights'][j]['sets'][k]['lbkg'] %> x <%= splits[i]['weights'][j]['sets'][k]['rep'] %> (<%= splits[i]['weights'][j]['sets'][k]['set'] %> sets)
+				<% } %>
+				tr
+					td(style='padding-top:10px')
+				<% } %>
+		<% } %>
+	script(type='text/tempalte', id='button_view')
+		#button_container
+			#program_delete
+			#program_edit
