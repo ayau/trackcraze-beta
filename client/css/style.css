@@ -449,6 +449,7 @@ h6 {
 /* line 222, style.scss */
 #button_container {
   background: url("/images/buttons_bg.png");
+  z-index: 3;
   width: 36px;
   height: 61px;
   position: absolute;

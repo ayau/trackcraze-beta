@@ -219,7 +219,7 @@ $padding_btn: 7px 15px 7px 15px;
 .workout_set {width:150px;}
 .workout_exercise {width:250px;}
 
-#button_container {background:url("/images/buttons_bg.png"); width:36px; height:61px; position:absolute; top:310px; right:50%; margin-right:-475px;}
+#button_container {background:url("/images/buttons_bg.png"); z-index:3; width:36px; height:61px; position:absolute; top:310px; right:50%; margin-right:-475px;}
 
 #program_delete {
 	background:url('/images/delete.png'); margin-left:2px; height:31px; width:31px;

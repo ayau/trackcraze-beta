@@ -15,18 +15,18 @@ exports.get_program = function(req, res){
         "user_id" : 3,
         "splits" : [
             {
-                "id": 0,
+                "id": 4,
                 "name": "Chest",
                 "position": 1,
                 "weights": [
                     {
-                        "id": 0,
+                        "id": 5,
                         "name": "Incline bench press",
                         "position": 1,
                         "comment": "Can definitely increase weight next time",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 6,
                                 "set": 2,
                                 "weight": 150,
                                 "lbkg": 'lbs',
@@ -34,7 +34,7 @@ exports.get_program = function(req, res){
                                 "position": 1
                             },
                             {
-                                "id": 0,
+                                "id": 7,
                                 "set": 1,
                                 "weight": 160,
                                 "lbkg": 'lbs',
@@ -44,13 +44,13 @@ exports.get_program = function(req, res){
                         ]
                     },
                     {
-                        "id": 0,
+                        "id": 8,
                         "name": "Flat bench press",
                         "position": 2,
                         "comment": "",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 9,
                                 "set": 3,
                                 "weight": 175,
                                 "lbkg": 'lbs',
@@ -60,13 +60,13 @@ exports.get_program = function(req, res){
                         ]
                     },
                     {
-                        "id": 0,
+                        "id": 10,
                         "name": "Barbell row",
                         "position": 3,
                         "comment": "",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 11,
                                 "set": 3,
                                 "weight": 180,
                                 "lbkg": 'lbs',
@@ -76,13 +76,13 @@ exports.get_program = function(req, res){
                         ]
                     },
                     {
-                        "id": 0,
+                        "id": 12,
                         "name": "Weighted pull ups",
                         "position": 4,
                         "comment": "",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 13,
                                 "set": 2,
                                 "weight": 60,
                                 "lbkg": 'lbs',
@@ -90,7 +90,7 @@ exports.get_program = function(req, res){
                                 "position": 1
                             },
                             {
-                                "id": 0,
+                                "id": 14,
                                 "set": 1,
                                 "weight": 45,
                                 "lbkg": 'lbs',
@@ -102,18 +102,18 @@ exports.get_program = function(req, res){
                 ]
             },
             {
-                "id": 0,
+                "id": 15,
                 "name": "Shoulder",
                 "position": 2,
                 "weights": [
                     {
-                        "id": 0,
+                        "id": 16,
                         "name": "Seated Shoulder Press",
                         "position": 1,
                         "comment": "",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 17,
                                 "set": 3,
                                 "weight": 105,
                                 "lbkg": 'lbs',
@@ -123,13 +123,13 @@ exports.get_program = function(req, res){
                         ]
                     },
                     {
-                        "id": 0,
+                        "id": 18,
                         "name": "Dumbbell Press",
                         "position": 2,
                         "comment": "",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 19,
                                 "set": 3,
                                 "weight": 45,
                                 "lbkg": 'lbs',
@@ -139,13 +139,13 @@ exports.get_program = function(req, res){
                         ]
                     },
                     {
-                        "id": 0,
+                        "id": 20,
                         "name": "Lateral raises",
                         "position": 3,
                         "comment": "Hurt my wrist during this exercise",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 21,
                                 "set": 2,
                                 "weight": 25,
                                 "lbkg": 'lbs',
@@ -153,7 +153,7 @@ exports.get_program = function(req, res){
                                 "position": 1
                             },
                             {
-                                "id": 0,
+                                "id": 22,
                                 "set": 1,
                                 "weight": 10,
                                 "lbkg": 'lbs',
@@ -163,13 +163,13 @@ exports.get_program = function(req, res){
                         ]
                     },
                     {
-                        "id": 0,
+                        "id": 23,
                         "name": "Barbell front raise",
                         "position": 4,
                         "comment": "",
                         "sets": [
                             {
-                                "id": 0,
+                                "id": 24,
                                 "set": 2,
                                 "weight": 50,
                                 "lbkg": 'lbs',

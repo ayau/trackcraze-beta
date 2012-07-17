@@ -1,11 +1,11 @@
-article#program(style='margin-top:20px') 
+article#content_holder(style='margin-top:20px') 
 
 
 	script(type='text/javascript', src='/js/lib/jquery.min.js')
 	script(type='text/javascript', src='/js/lib/underscore.js')
 	script(type='text/javascript', src='/js/lib/backbone.js')
 	script(type='text/javascript', src='/js/views/programs/view.js')
-	script(type='text/template', id='program_view')
+	script(type='text/template', id='program_view1')
 		p#program_name <%= name %>
 		<% for (i = 0; i< splits.length; i++){ %>
 		article(style='margin-top:20px')
@@ -24,6 +24,13 @@ article#program(style='margin-top:20px')
 					td(style='padding-top:10px')
 				<% } %>
 		<% } %>
+	script(type='text/template', id='program_view')
+		p#program_name <%= name %>
+		div#split_holder
+	script(type='text/template', id='split_view')
+		article(style='margin-top:20px')
+			p(style='font-size:24px;margin:10px 0px 10px 20px') <%= name %>
+			table.workout_table
 	script(type='text/tempalte', id='button_view')
 		#button_container
 			#program_delete
