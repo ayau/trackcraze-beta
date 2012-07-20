@@ -1,49 +1,36 @@
 $(function(){
 
-    /*Weights = Backbone.Model.extend({
-        defaults: {
-            id = 0,
-            name = 'Bench Press',
-            exercise_id = 0,
-            position = 0
-        },
+    Set = Backbone.Model.extend({
         initialize: function(){
-            
+        }
+
+    })
+
+    Sets = Backbone.Collection.extend({
+        model: Set
+    })
+    
+    Weight = Backbone.Model.extend({
+
+        initialize: function(){
+            var setsJSON = this.get('sets');
+            this.sets = new Sets(setsJSON);
         }
     })
 
-    Set = Backbone.Model.extend({
-        defaults: {
-            id = 0,
-            set = 0,
-            weight = 0,
-            lbkg = 'lbs'
-            rep = 0,
-            position = 0
-        },
-        initialize: function(){
-
-        }
-
-    })*/
+    Weights = Backbone.Collection.extend({
+        model: Weight
+    })
 
     Split = Backbone.Model.extend({
-
-        initialize: function(){
-            //console.log(this.model);
+        initialize:function(){
+            var weightsJSON = this.get('weights');
+            this.weights = new Weights(weightsJSON);
         }
     })
 
     Splits = Backbone.Collection.extend({
-        model: Split/*,
-        initialize: function(splits){
-            this.each(function(splits){
-                //var split_view = splits;
-                //$("#program").append(split_view.render().el);
-                alert("two");
-            })
-        }*/
-
+        model: Split
     })
 
     Program = Backbone.Model.extend({
@@ -68,6 +55,47 @@ $(function(){
 
     });
 
+    SetView = Backbone.View.extend({
+         template: _.template($("#set_view").html()),
+         template_multiple: _.template($("#set_views").html()),
+         initialize: function(){
+            _.bindAll(this, "render");
+            this.model.bind("change", this.render, this);
+            this.render();
+         },
+         render: function(){
+            if(this.model.get("position") === 1)
+                this.setElement(this.template(this.model.toJSON()));
+            else this.setElement(this.template_multiple(this.model.toJSON()));
+            return this;
+         }
+    })
+
+    WeightView = Backbone.View.extend({
+
+        template: _.template($("#weight_view").html()),
+
+        initialize: function(){
+            _.bindAll(this, "render");
+            this.model.bind("change", this.render, this);
+            this.render();
+        },
+        render: function(){
+            this.setElement(this.template(this.model.toJSON()));
+            this.update();
+            return this;
+        },
+        update: function(){
+            var el = this.el;
+            this.model.sets.each(function(set){
+                set_view = new SetView({model: set});
+                if(set.get('position') === 1)
+                    $(el).find(".workout_exercise").after(set_view.render().el);
+                else $(el).find('.table_break').before(set_view.render().el);
+            })
+        }
+    })
+
     SplitView = Backbone.View.extend({
 
         template: _.template($("#split_view").html()),
@@ -79,7 +107,15 @@ $(function(){
         },
         render: function(){
             this.setElement(this.template(this.model.toJSON()));
+            this.update();
             return this;
+        },
+        update: function(){
+            var el = this.el;
+            this.model.weights.each(function(weight){
+                weight_view = new WeightView({model: weight});
+                $(el).find(".workout_table").append(weight_view.render().el);
+            })
         }
     })
 
@@ -97,7 +133,6 @@ $(function(){
             //$("#content_holder").append(this.el);
             //$(this.el).append(this.el);
             this.update();
-            debugger;
             return this;
         },
         update: function(){
@@ -125,6 +160,8 @@ $(function(){
             _.bindAll(this, "render");
             var program_view = new ProgramView({model: new Program()});
             $(this.el).prepend(program_view.el);
+            //Check if owner
+            var button_view = new ButtonView();
         },
         render: function(){
             return this;
@@ -146,9 +183,6 @@ $(function(){
 
     //Make the content stretch to fit 
     $("#content").height($("#nav_left").height()+80);
-
-    //Check if owner
-    var button_view = new ButtonView();
 
     //scrolling of the button container
     var top = $('#button_container').position().top;

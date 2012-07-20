@@ -31,6 +31,18 @@ article#content_holder(style='margin-top:20px')
 		article(style='margin-top:20px')
 			p(style='font-size:24px;margin:10px 0px 10px 20px') <%= name %>
 			table.workout_table
+	script(type='text/template', id='weight_view')
+		table(style='padding:0px')
+			tr
+				| <td class='workout_exercise' rowspan= <%= sets.length %> > <%= name %></td>
+				| <td class='workout_comment' rowspan= <%= sets.length %> > <%= comment %></td>
+			tr.table_break
+				td(style='padding-top:10px')
+	script(type='text/template', id='set_views')
+		tr
+			td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set%> <%if(set==1){%>set<%}else{%>sets<%}%>)
+	script(type='text/template', id='set_view')
+		td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set %> <%if(set==1){%>set<%}else{%>sets<%}%>)
 	script(type='text/tempalte', id='button_view')
 		#button_container
 			#program_delete
