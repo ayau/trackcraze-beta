@@ -165,7 +165,7 @@ $(function(){
         },
         render: function(){
             return this;
-        
+        }
     })
 
     ButtonView = Backbone.View.extend({
