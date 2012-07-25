@@ -88,7 +88,7 @@ $(function(){
         update: function(){
             var el = this.el;
             this.model.sets.each(function(set){
-                set_view = new SetView({model: set});
+                var set_view = new SetView({model: set});
                 if(set.get('position') === 1)
                     $(el).find(".workout_exercise").after(set_view.render().el);
                 else $(el).find('.table_break').before(set_view.render().el);
@@ -113,7 +113,7 @@ $(function(){
         update: function(){
             var el = this.el;
             this.model.weights.each(function(weight){
-                weight_view = new WeightView({model: weight});
+                var weight_view = new WeightView({model: weight});
                 $(el).find(".workout_table").append(weight_view.render().el);
             })
         }
@@ -138,7 +138,7 @@ $(function(){
         update: function(){
             var el = this.el;
             this.model.splits.each(function(split){
-                split_view = new SplitView({model: split});
+                var split_view = new SplitView({model: split});
                 $(el).find('#split_holder').append(split_view.render().el);
             })
         }
@@ -165,7 +165,7 @@ $(function(){
         },
         render: function(){
             return this;
-        }
+        
     })
 
     ButtonView = Backbone.View.extend({
@@ -179,32 +179,47 @@ $(function(){
         }
     })
 
+    NavView = Backbone.View.extend({
+        el: $("#nav_left"),
+        template: _.template($("#nav_view").html()),
+        initialize: function(){
+            this.render();
+        },
+        render: function(){
+            $(this.el).append(this.template());
+        }
+    })
+
+
     var app = new AppView();
 
     //Make the content stretch to fit 
     $("#content").height($("#nav_left").height()+80);
 
+    var button_container = $("#button_container");
+
     //scrolling of the button container
-    var top = $('#button_container').position().top;
+    var top = button_container.position().top;
+
     $(window).scroll(function (event) {
         var y = $(this).scrollTop();
-      
         if (y >= top - 10) 
-          $('#button_container').addClass('fixed');
+            button_container.addClass('fixed');
         else
-          $('#button_container').removeClass('fixed');
+            button_container.removeClass('fixed');
     });
+
+
+    var hide_button_container = function(){
+        button_container.addClass('hidden');
+    };
+
+    var show_button_container = function(){
+        button_container.removeClass('hidden');
+    }
 
     //hover for button container
-    $("#content").mouseout(function(){
-      $("#button_container").addClass('hidden');
-    }).mouseover(function(){
-       $("#button_container").removeClass('hidden');
-    });
+    $("#content").mouseout(hide_button_container).mouseover(show_button_container);
+    button_container.mouseout(hide_button_container).mouseover(show_button_container);
 
-    $("#button_container").mouseout(function(){
-      $("#button_container").addClass('hidden');
-    }).mouseover(function(){
-       $("#button_container").removeClass('hidden');
-    });
 });
