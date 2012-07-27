@@ -1,10 +1,10 @@
 article#content_holder(style='margin-top:20px') 
 
-
-	<script type='text/javascript' src='/js/lib/jquery.min.js'></script>
-	<script type='text/javascript' src='/js/lib/underscore.js'></script>
-	<script type='text/javascript' src='/js/lib/backbone.js'></script>
-	<script type='text/javascript' src='/js/views/programs/view.js'></script>
+	link(rel='stylesheet', href='/css/programs.css')
+	script(type='text/javascript', src='/js/lib/jquery.min.js')
+	script(type='text/javascript', src='/js/lib/underscore.js')
+	script(type='text/javascript', src='/js/lib/backbone.js')
+	script(type='text/javascript', src='/js/views/programs.js')
 	script(type='text/template', id='program_view')
 		p#program_name <%= name %>
 		div#split_holder
@@ -19,10 +19,10 @@ article#content_holder(style='margin-top:20px')
 				| <td class='workout_comment' rowspan= <%= sets.length %> > <%= comment %></td>
 			tr.table_break
 				td(style='padding-top:10px')
-	script(type='text/template', id='set_views')
+	script(type='text/template', id='set_view')
 		tr
 			td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set%> <%if(set==1){%>set<%}else{%>sets<%}%>)
-	script(type='text/template', id='set_view')
+	script(type='text/template', id='set_view_first')
 		td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set %> <%if(set==1){%>set<%}else{%>sets<%}%>)
 	script(type='text/tempalte', id='button_view')
 		#button_container

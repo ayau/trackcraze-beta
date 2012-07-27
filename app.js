@@ -3,9 +3,10 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes/index.js')
-  , api = require('./routes/api.js');
+  var express = require('express')
+  , routes    = require('./routes/index.js')
+  , api       = require('./routes/api.js')
+  , stylus    = require('stylus');
 
 var app = module.exports = express.createServer();
 
@@ -18,11 +19,12 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(__dirname + '/client'));
+  app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(stylus.middleware({ src: __dirname + '/public/stylus', dest: __dirname + '/public' }));
 });
 
 app.configure('production', function(){
@@ -32,10 +34,13 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/programs/:id?', routes.programs);
+app.get('/programs/:id', routes.programs);
 
 //api
 app.get('/api/programs/:id', api.get_program);
+app.post('/api/programs', api.post_program);
+app.put('/api/programs/:id', api.put_program);
+app.delete('/api/programs/:id', api.delete_program);
 
 
 var port = process.env.PORT || 3000;

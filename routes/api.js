@@ -6,6 +6,18 @@ exports.get_program = function(req, res){
 	return res.send(data);
 };
 
+exports.post_program = function(req, res){
+    return res.send(data);
+};
+
+exports.put_program = function(req, res){
+    return res.send(data);
+};
+
+exports.delete_program = function(req, res){
+    return res.send(data);
+};
+
     data = { 
         "created_at" : "2012-07-10 10:24:03",
         "id" : 3,

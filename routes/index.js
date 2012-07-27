@@ -3,7 +3,7 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' })
 };
 
-//GET program page
+//Programs
 exports.programs = function(req, res){
 	var id = req.params.id;
 	//console.log(id);
