@@ -1,0 +1,160 @@
+
+@import 'nib'
+@import 'default'
+
+html
+    background url("/images/blur_bg.png") no-repeat center center fixed
+
+header
+    background rgba(0,0,0,0.3)
+    height 160px
+    width 100%
+
+    a
+        text-decoration none
+        color white
+
+        h1
+            font-size 64px
+            text-shadow rgba(0,0,0,0.3) 2px 1px 2px
+            display inline
+            font-weight: normal
+        p
+            margin-left 3px
+            display inline
+            font-size subSize 
+            text-shadow rgba(0,0,0,0.2) 1px 1px 1px
+
+    .logout
+        relative: top -120px left 250px
+        text-decoration none
+        color textColor
+        &:hover
+            text-decoration underline
+            cursor pointer
+
+#search
+    display block
+
+#container
+    width 900px 
+    relative: top 30px
+    overflow auto
+    margin 0 auto
+    margin-bottom 40px
+    background rgba(0,0,0,0.5)
+    border-radius 5px
+    box-shadow 0px 1px 1px 1px rgba(0,0,0,0.5)
+
+    nav
+        float left
+        width 190px
+        margin-top 49px
+
+        a
+            text-decoration none
+            padding 20px 10px
+            display:block
+        img
+            float left
+            margin-top -15px
+            margin-right 10px
+
+        li
+            border-bottom 1px solid rgba(0,0,0,0.5)
+            border-top 1px solid rgba(255,255,255,0.2)
+            background linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.1))
+            padding-bottom 1px
+            
+            &:hover
+                background rgba(0,0,0,0.4)
+                cursor pointer
+
+                .program_select.star
+                    background url("/images/star.png")
+                .star
+                    background url("/images/star_hover.png")
+                    &:hover
+                        background url("/images/star.png")
+
+            label 
+                color rgba(255,255,255,0.7)
+                text-shadow 0 -1px -1px rgba(0, 0, 0, 0.5)
+
+            p
+                @extends #container nav li label
+                margin-left 25px
+
+    .selected
+        background rgba(0,0,0,0.4)
+        &:hover
+            cursor default
+
+    .program_select
+        background url("/images/star.png")
+
+    .star, .program_select
+        width 20px
+        height 20px 
+        float left 
+        margin 0px
+        relative: left 10px top 19px
+        background-size 100% 
+        cursor pointer
+
+#new_program
+    textarea
+        width 153px
+        background rgba(255,255,255,0.9)
+        padding 5px
+        margin-left: 5px
+
+    #new_program_submit
+        margin 5px
+        float left 
+        &:hover 
+            text-decoration underline
+            cursor pointer
+
+#content
+    float right
+    width 700px
+    padding-bottom 50px
+    margin 10px 10px 10px 0px
+    overflow hidden 
+    min-height 900px
+    background #F6F6F6
+    border-radius 5px
+    box-shadow 0px 2px 3px 3px rgba(0,0,0,0.5)
+
+    header
+        background #EAEAEA
+        width 100%
+        height 100px 
+        overflow hidden
+        box-shadow 0px 1px 3px 1px rgba(0,0,0,0.1)
+
+        section
+            float left
+            margin-left 10px
+
+            h3
+                padding 10px 0px
+                margin 0px
+                text-shadow none
+
+            article
+                margin-top 10px
+
+
+
+.avatar
+    box-shadow 0px 1px 3px 1px rgba(0,0,0,0.5)
+    height 100px 
+    width 100px
+    float left
+
+#content_holder
+    margin-top 20px
+
+

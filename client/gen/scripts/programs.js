@@ -347,7 +347,24 @@
       return button_container.removeClass('hidden');
     };
     $("#content").mouseout(hide_button_container).mouseover(show_button_container);
-    return button_container.mouseout(hide_button_container).mouseover(show_button_container);
+    button_container.mouseout(hide_button_container).mouseover(show_button_container);
+    return $("#new_program").live("click", function() {
+      if (!$(this).hasClass('selected')) {
+        $(this).addClass('selected');
+        return $(this).animate({
+          height: '150px'
+        }, {
+          duration: 400,
+          specialEasing: {
+            top: 'easeOutBounce'
+          },
+          complete: function() {
+            $(this).find("#new_program_name").fadeIn();
+            return $("#new_program_submit").fadeIn();
+          }
+        });
+      }
+    });
   });
 
 }).call(this);

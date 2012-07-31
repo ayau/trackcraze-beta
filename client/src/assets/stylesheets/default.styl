@@ -1,0 +1,58 @@
+
+@import 'nib'
+
+@font-face
+    font-family Museo
+    font-style normal
+    src: url('/fonts/MuseoSans_500.otf')
+
+textColor = black
+secondaryColor = #AAA
+mainSize = 16px
+subSize = 12px
+
+*
+    box-sigin border-box
+
+html, body
+    height 100%
+    width 100%
+
+body
+    color textColor
+    font-family Museo
+    font-size mainSize
+    margin 0px
+    padding 0px
+    text-rendering optimizeLegibility
+    background-attachment fixed
+
+p, ol, ul, td
+    font-size mainSize
+    line-height: 18px
+    margin 0px
+    padding 0px
+
+ul, ol
+    list-style-type none
+
+a
+    &:hover
+        cursor pointer
+
+
+input[type=text]
+    font-family Museo
+    width 280px
+    height 40px
+    padding 0px 10px
+    font-size mainSize
+    border none
+    border-radius 5px
+    border-top 1px solid rgba(0,0,0,0.5)
+    border-bottom 1px solid rgba(0,0,0,0.3)
+
+textarea
+    font-family Museo
+    font-size mainSize
+    resize none

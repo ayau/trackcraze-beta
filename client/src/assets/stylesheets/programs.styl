@@ -1,0 +1,72 @@
+
+@import 'nib'
+@import 'default'
+
+
+h2
+    font-size 28px 
+    margin 25px 0px 10px 20px
+    text-shadow rgba(0,0,0,0.2) 1px 1px 1px
+    font-weight normal
+
+#split_holder
+    article
+        margin-top 20px
+        p
+            font-size 24px
+            margin 10px 0px 10px 20px
+
+.workout_table
+    margin-left 20px
+    td
+        vertical-align top
+        padding 5px
+
+.workout_exercise
+    width 250px
+
+.workout_set
+    width 150px
+
+.workout_comment
+    color secondaryColor
+
+#button_container
+    background url("/images/buttons_bg.png")
+    z-index 3
+    width 36px
+    height 61px
+    absolute: top 310px right 50%
+    margin-right -475px
+
+    &.fixed
+        fixed: top 10px
+
+    &.hidden
+        display none
+
+    .delete
+        background url('/images/delete.png')
+        margin-left 2px
+        height 31px
+        width 31px
+        &:hover
+            cursor pointer
+            background url("/images/delete_hover.png")
+
+    .edit
+        margin-left 7px
+        margin-top -1px 
+        background url('/images/edit.png')
+        height 22px
+        width 22px
+        &:hover
+            cursor pointer
+            background url("/images/edit_hover.png")
+
+
+
+
+        
+
+

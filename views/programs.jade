@@ -1,4 +1,4 @@
-article#content_holder(style='margin-top:20px') 
+section#content_holder
 
 	link(rel='stylesheet', href='/css/programs.css')
 	script(type='text/javascript', src='/js/lib/jquery.min.js')
@@ -6,12 +6,12 @@ article#content_holder(style='margin-top:20px')
 	script(type='text/javascript', src='/js/lib/backbone.js')
 	script(type='text/javascript', src='/js/views/programs.js')
 	script(type='text/template', id='program_view')
-		p#program_name <%= name %>
-		div#split_holder
+		h2 <%= name %>
+		#split_holder
 	script(type='text/template', id='split_view')
-		article(style='margin-top:20px')
-			p(style='font-size:24px;margin:10px 0px 10px 20px') <%= name %>
-			table.workout_table
+		article
+			p <%= name %>
+			.workout_table
 	script(type='text/template', id='weight_view')
 		table(style='padding:0px')
 			tr
@@ -26,23 +26,13 @@ article#content_holder(style='margin-top:20px')
 		td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set %> <%if(set==1){%>set<%}else{%>sets<%}%>)
 	script(type='text/tempalte', id='button_view')
 		#button_container
-			#program_delete
-			#program_edit
+			.delete
+			.edit
 
 	script(type='text/template', id='nav_view')
-		div
-			span
+		li(pid='3', class='selected')
+			span(class='star program_select')
 			a
 				p <%=name%>
 	
-		//- | <div pid=<%=id%> <%if(selected){%>class='selected'<%}%>
-
-		//- echo "<div pid='".$p['id']."'";
-		//- if($p['id'] === $program_id)
-		//- 	echo " class='selected'";
-		//- echo "><span class='";
-		//- if($isOwner)
-		//- 	echo "star";
-		//- if($main_program === $p['id'])
-		//- 	echo " program_select";
-		//- echo "'></span><a href='program.php?id=".$p['id']."'><p>".$p['name']."</p></a></div>";
+	

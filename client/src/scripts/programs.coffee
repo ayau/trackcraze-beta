@@ -114,7 +114,7 @@ $ ->
     #Top level UI
     class AppView extends Backbone.View
         el: $ '#content_holder'
-        vent: _.extend({}, Backbone.Events)
+        vent: _.extend({}, Backbone.Events) #event aggregator
 
         initialize: ->
             _.bindAll @
@@ -171,4 +171,19 @@ $ ->
     #hover for button container
     $("#content").mouseout(hide_button_container).mouseover(show_button_container)
     button_container.mouseout(hide_button_container).mouseover(show_button_container)
+
+
+    $("#new_program").live "click", ->
+        if !$(this).hasClass 'selected'
+            $(this).addClass 'selected'
+            $(this).animate { height: '150px'},
+                duration: 400,
+                specialEasing:
+                    top: 'easeOutBounce'
+                complete: ->
+                    $(this).find("#new_program_name").fadeIn()
+                    $("#new_program_submit").fadeIn()
+            
+
+
 

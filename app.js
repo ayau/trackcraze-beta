@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -6,7 +5,8 @@
   var express = require('express')
   , routes    = require('./routes/index.js')
   , api       = require('./routes/api.js')
-  , stylus    = require('stylus');
+  , stylus    = require('stylus')
+  , nib       = require('nib');
 
 var app = module.exports = express.createServer();
 
@@ -19,13 +19,24 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+  app.use(stylus.middleware({ 
+    src: __dirname + '/client/stylus'
+    , dest: __dirname + '/client'
+    , compile: compile
+    }));
+  app.use(express.static(__dirname + '/client'));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  app.use(stylus.middleware({ src: __dirname + '/public/stylus', dest: __dirname + '/public' }));
 });
+
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .set('compress', true)
+    .use(nib());
+}
 
 app.configure('production', function(){
   app.use(express.errorHandler());
