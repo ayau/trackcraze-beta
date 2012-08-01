@@ -2,11 +2,11 @@
 html
 	head
 		//if lt IE 9
-			script (src="/js/html5shiv.js")
+			script (src="../lib/html5shiv.js")
 		title= title
 		//- link(rel='stylesheet', href='/css/style.css')
-		link(rel='stylesheet', href='/css/default.css')
-		link(rel='stylesheet', href='/css/app.css')
+		link(rel='stylesheet', href='/assets/stylesheets/default.css')
+		link(rel='stylesheet', href='/assets/stylesheets/app.css')
 		meta(name='KEYWORDS', content='trackcraze,fitness,tracking,gym,workout,log,exercise,record,share')
 		meta(name='Description', content="Trackcraze lets you follow other people's workout, record your own, and share it with others. Track your friends, your idol, and most importantly, yourself. Make fitness simple, customizable and motivating.")
 		meta(charset="UTF-8")
@@ -24,15 +24,15 @@ html
 				ul
 					li
 						a
-							img(src='/images/profile.png')
+							img(src='/assets/images/profile.png')
 							label Profile
 					li
 						a
-							img(src='/images/record.png')
+							img(src='/assets/images/record.png')
 							label Record
 					li
 						a
-							img(src='/images/diary.png')
+							img(src='/assets/images/diary.png')
 							label Diary
 					li
 						a
@@ -50,17 +50,17 @@ html
 							p abc
 					li#new_program
 						a
-							img(src='/images/addprogram.png')
+							img(src='/assets/images/addprogram.png')
 							label New Program
 							textarea#new_program_name(placeholder='program name', hidden)
 							<p id='new_program_submit' hidden>create</p>
 			#content
 				header
-					img.avatar(src='/images/alex_pic.jpg')
+					img.avatar(src='/assets/images/alex_pic.jpg')
 					section
 						h3 Alex
 						p CEO and Co-Founder of trackCraze. Casual gym goer
 						article
-							img(src='/images/birthday.png', style='float:left; width:15px;position:relative; top:-3px; opacity:0.7')
+							img(src='/assets/images/birthday.png', style='float:left; width:15px;position:relative; top:-3px; opacity:0.7')
 							p(style='float:left; margin-left:10px') 03/12/91
 				!=body

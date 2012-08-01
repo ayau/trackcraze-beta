@@ -1,4 +1,4 @@
-{exec} = require 'child_process'
+{exec, spawn} = require 'child_process'
 path = require 'path'
 
 option '-w', '--watch', 'watch changes from project and build'
@@ -15,6 +15,9 @@ dir =
         name: 'stylesheets'
         src: 'client/src/assets/stylesheets'
         gen: 'client/gen/assets/stylesheets'
+    lib:
+        src: 'client/lib'
+        gen: 'client/gen/lib'
 
 task 'build', 'build project from source', (options) ->
     exec "rm -rf '#{dir.gen}'" #clear gen folder
@@ -23,6 +26,8 @@ task 'build', 'build project from source', (options) ->
     exec "rsync -av --exclude='#{dir.stylesheets.name}' '#{dir.assets.src}' '#{dir.assets.gen}'" #copy assets (excluding stylesheets)
     console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.cyan}CREATE#{colors.reset}" + " #{dir.assets.gen}"
     # exec "mkdir -p '#{dir.scripts.gen}'" #create scripts directory
+    exec "cp -r '#{dir.lib.src}' '#{dir.lib.gen}'"
+    console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.magenta}COPY#{colors.reset}" + " #{dir.lib.gen}"
     exec "./node_modules/.bin/coffee -co '#{path.dirname dir.scripts.gen}' '#{path.dirname dir.scripts.src}'", (err, stdout, stderr) ->
         throw err if err
         # console.log stdout + stderr
@@ -33,6 +38,8 @@ task 'build', 'build project from source', (options) ->
         console.log stdout + stderr
     console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.yellow}COMPILE#{colors.reset}" + " #{dir.stylesheets.gen}"
 
+# #task 'run', 'Run the server', (options) ->
+#   process = spawn 'node', ['server/compiled/scripts/server.js']
 
 colors =
     black     : '\x1B[0;30m'
