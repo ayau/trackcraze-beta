@@ -64,3 +64,9 @@ html
 							img(src='/assets/images/birthday.png', style='float:left; width:15px;position:relative; top:-3px; opacity:0.7')
 							p(style='float:left; margin-left:10px') 03/12/91
 				!=body
+		script(type='text/javascript', src='/scripts/app.js')		
+		script(type='text/template', id='nav_view')
+			li(pid='3', class='selected')
+				span(class='star program_select')
+				a
+					p <%=name%>

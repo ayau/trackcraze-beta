@@ -35,6 +35,7 @@ app.get('/', routes.index);
 app.get('/programs/:id', routes.programs);
 
 //api
+app.get('/api/programs', api.get_all_programs);
 app.get('/api/programs/:id', api.get_program);
 app.post('/api/programs', api.post_program);
 app.put('/api/programs/:id', api.put_program);
