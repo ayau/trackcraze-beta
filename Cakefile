@@ -16,8 +16,8 @@ dir =
         src: 'client/src/assets/stylesheets'
         gen: 'client/gen/assets/stylesheets'
     lib:
-        src: 'client/lib'
-        gen: 'client/gen/lib'
+        src: 'client/src/assets/lib/'
+        gen: 'client/gen/assets/lib/'
 
 task 'build', 'build project from source', (options) ->
     exec "rm -rf '#{dir.gen}'" #clear gen folder
@@ -37,6 +37,12 @@ task 'build', 'build project from source', (options) ->
         throw err if err
         console.log stdout + stderr
     console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.yellow}COMPILE#{colors.reset}" + " #{dir.stylesheets.gen}"
+
+
+#TODO
+# WATCH
+# build library
+# build folder structure
 
 # #task 'run', 'Run the server', (options) ->
 #   process = spawn 'node', ['server/compiled/scripts/server.js']

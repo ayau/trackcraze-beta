@@ -55,6 +55,7 @@ header
             text-decoration none
             padding 20px 10px
             display:block
+            
         img
             float left
             margin-top -15px
@@ -68,9 +69,8 @@ header
             
             &:hover
                 background rgba(0,0,0,0.4)
-                cursor pointer
 
-                .program_select.star
+                .main_program.star
                     background-image url("/assets/images/star.png")
                 .star
                     background-image url("/assets/images/star_hover.png")
@@ -87,13 +87,13 @@ header
 
     .selected
         background rgba(0,0,0,0.4)
-        &:hover
+        a, label
             cursor default
 
-    .program_select
+    .main_program
         background-image url("/assets/images/star.png")
 
-    .star, .program_select
+    .star, .main_program
         width 20px
         height 20px 
         float left 
@@ -123,7 +123,7 @@ header
     margin 10px 10px 10px 0px
     overflow hidden 
     min-height 900px
-    background #F6F6F6
+    background #F0F0F0
     border-radius 5px
     box-shadow 0px 2px 3px 3px rgba(0,0,0,0.5)
 

@@ -1,14 +1,14 @@
 {
     "name": "trackcraze"
-  , "version": "0.0.1"
+  , "version": "1.0.0"
   , "private": true
   , "dependencies": {
       "express": "2.5.11"
     , "jade": ">= 0.0.1"
-    , "stylus": "0.28.x"
-    , "nib": "0.7.x"
     , "backbone": "0.9.x"
     , "coffee-script": "1.3.x"
+    , "stylus": "0.28.x"
+    , "nib": "0.7.x"
   },
   "engines": {
     "node": "0.8.x",

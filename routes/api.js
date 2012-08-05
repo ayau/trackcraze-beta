@@ -2,7 +2,6 @@
 
 
 exports.get_all_programs = function (req, res){
-    console.log(programs)
     return res.send(programs);
 }
 
