@@ -6,7 +6,5 @@ exports.index = function(req, res){
 //Programs
 exports.programs = function(req, res){
 	var id = req.params.id;
-	//console.log(id);
-	//res.send('user ' + req.params.id);
 	res.render('programs', { title: 'Express', layout: 'layout' });
 };

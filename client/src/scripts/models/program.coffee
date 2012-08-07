@@ -3,6 +3,7 @@ class App.Program extends Backbone.Model
     # splits: new App.Splits
 
     initialize: ->
+        # console.log @
         @splits = new App.Splits @get('splits')
         # @fetch()
     # parse: (res) ->

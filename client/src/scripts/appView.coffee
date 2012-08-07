@@ -2,46 +2,69 @@
 class App.AppView extends Backbone.View
     el: $('body')
 
+    events: 
+        'click #new_program'        : 'newProgramShow'
+        'click #new_program_submit' : 'newProgramCreate'
+
     initialize: ->
         _.bindAll @
 
+        # collection of programs from a user
         @programs = new App.Programs
-        @programs.bind "reset", (collection, res) =>
-            contentView = new App.ContentView program: collection.get(3)
-            collection.each (program, i) ->
-                programListView = new App.ProgramListView model: program, selected: i == 0, isMain: i == 1
-                $('#new_program').before(programListView.render().el)
+        @programs.bind 'reset', @programReset
+        @programs.bind 'add', @programAdd
 
-        # avoid this. Put it in view
-        $("#new_program").live "click", ->
-            if !$(this).hasClass 'selected'
-                $(this).addClass 'selected'
-                $(this).animate { height: '150px'},
-                    duration: 400,
-                    specialEasing:
-                        top: 'easeOutBounce'
-                    complete: ->
-                        $(this).find("#new_program_name").fadeIn()
-                        $("#new_program_submit").fadeIn()
+        # cached dom elements
+        @new_program        = $('#new_program')
+        @new_program_name   = $('#new_program_name')
+        @new_program_submit = $('#new_program_submit')
 
-        #Make the content stretch to fit 
-        $("#content").height($("#nav_left").height()+80)
+        # State variables
+        @createDisabled = false # prevent multiple duplicate program creation
 
-    render: ->
-        return @
+    render: -> @
 
-class App.ProgramListView extends Backbone.View
-    template: _.template($("#nav_view").html())
+    programAdd: (program)->
+        # console.log @programs
+        programListView = new App.ProgramListView model: program, selected: program.id == 3, isMain: program.id == 2
+        @new_program.before(programListView.render().el)
 
-    initialize: ->
-        _.bindAll @
-        @render()
+    programReset: ->
+        App.contentView = new App.ContentView program: @programs.get(3)
+        @programs.each @programAdd
 
-    render: ->
-        @setElement(@template({program: @model.toJSON(), selected: @options.selected, isMain: @options.isMain}))
-        # @update()
-        return @
+    newProgramShow: ->
+        if !@new_program.hasClass 'selected'
+            @new_program.addClass 'selected'
+            @new_program.animate { height: '150px'},
+                duration: 400,
+                specialEasing:
+                    top: 'easeOutBounce'
+                complete: =>
+                    @new_program_name.fadeIn()
+                    @new_program_submit.fadeIn()
 
+    newProgramCreate: ->
+        if !@createDisabled
+            @createDisabled = true
+            name = @new_program_name.val()
+            name = name.trim();
+            if name.split(' ').join('').length > 0
+                console.log @programs.create name: @new_program_name.val()
+                duration = 10
+            else
+                duration = 400
+
+            @new_program_name.val ''
+            @new_program_name.hide()
+            @new_program_submit.hide()
+            @new_program.animate {height: '61px'},
+                duration: duration,
+                specialEasing:
+                    top: 'easeOutBounce'
+                complete: =>
+                    @new_program.removeClass 'selected'
+                    @createDisabled = false
 
 #Content level UI
 class App.ContentView extends Backbone.View
@@ -51,8 +74,8 @@ class App.ContentView extends Backbone.View
     initialize: (options)->
         _.bindAll @
 
-        program_view = new App.ProgramView model: @options.program, vent: @vent #not the order but the id of the program
-        $(@el).prepend(program_view.el)
+        if @options.program?
+            @program_view = new App.ProgramView model: @options.program, vent: @vent #not the order but the id of the program
 
         # ButtonView
         @buttonView = new App.ButtonView vent: @vent
@@ -74,8 +97,19 @@ class App.ContentView extends Backbone.View
         $("#content").mouseout(@hide_button_container).mouseover(@show_button_container)
         @button_container.mouseout(@hide_button_container).mouseover(@show_button_container)
 
+        @render()
+
     render: ->
-        return @
+        # refreshes the content but not the button view
+        if @program_view? then $(@el).html(@program_view.el)
+#Make the content stretch to fit 
+        $("#content").height $("#nav_left").height() + 80
+        @
+
+    updateProgram: (program) ->
+# TODO save list of programviews created so we don't create multiple views of the same thing
+        @program_view = new App.ProgramView model: program, vent: @vent
+        @render()
 
     hide_button_container: ->
         @button_container.addClass('hidden')
@@ -86,6 +120,7 @@ class App.ContentView extends Backbone.View
 
 class App.ButtonView extends Backbone.View
     template: _.template($("#button_view").html())
+    events: 'click .edit': 'edit'
 
     initialize: (opt)->
         _.bindAll @
@@ -94,9 +129,7 @@ class App.ButtonView extends Backbone.View
 
     render: ->
         @setElement(@template())
-        return @
-
-    events: 'click #program_edit': 'edit'
+        @
 
     edit: ->
         @vent.trigger 'program_edit'

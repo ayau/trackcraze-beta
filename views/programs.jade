@@ -1,28 +1,32 @@
 section#content_holder
 
-	link(rel='stylesheet', href='/assets/stylesheets/programs.css')
-	script(type='text/template', id='program_view')
+link(rel='stylesheet', href='/assets/stylesheets/programs.css')
+script(type='text/template', id='program_view')
+	.program_name
 		h2 <%= name %>
-		#split_holder
-	script(type='text/template', id='split_view')
-		article
+		| <input type='text' class='paper_input' value='<%= name %>' />
+	#split_holder
+script(type='text/template', id='split_view')
+	article
+		.split_name
 			p <%= name %>
-			.workout_table
-	script(type='text/template', id='weight_view')
-		table(style='padding:0px')
-			tr
-				| <td class='workout_exercise' rowspan= <%= sets.length %> > <%= name %></td>
-				| <td class='workout_comment' rowspan= <%= sets.length %> > <%= comment %></td>
-			tr.table_break
-				td(style='padding-top:10px')
-	script(type='text/template', id='set_view')
+			| <input type='text' class='paper_input' value='<%= name %>' />
+		.workout_table
+script(type='text/template', id='weight_view')
+	table(style='padding:0px')
 		tr
-			td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set%> <%if(set==1){%>set<%}else{%>sets<%}%>)
-	script(type='text/template', id='set_view_first')
-		td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set %> <%if(set==1){%>set<%}else{%>sets<%}%>)
-	script(type='text/tempalte', id='button_view')
-		#button_container
-			.delete
-			.edit
+			| <td class='workout_exercise' rowspan= <%= sets.length %> > <%= name %></td>
+			| <td class='workout_comment' rowspan= <%= sets.length %> > <%= comment %></td>
+		tr.table_break
+			td(style='padding-top:10px')
+script(type='text/template', id='set_view')
+	tr
+		td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set%> <%if(set==1){%>set<%}else{%>sets<%}%>)
+script(type='text/template', id='set_view_first')
+	td.workout_set <%= weight %><%= lbkg %> x <%= rep %> (<%= set %> <%if(set==1){%>set<%}else{%>sets<%}%>)
+script(type='text/tempalte', id='button_view')
+	#button_container
+		.delete
+		.edit
 	
 	

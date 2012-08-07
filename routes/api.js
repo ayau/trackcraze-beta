@@ -5,21 +5,21 @@ exports.get_all_programs = function (req, res){
     return res.send(programs);
 }
 
-exports.get_program = function(req, res){
-	return res.send(program1);
-};
+// exports.get_program = function(req, res){
+// 	return res.send(program1);
+// };
 
-exports.post_program = function(req, res){
-    return res.send(program1);
-};
+// exports.post_program = function(req, res){
+//     return res.send(program1);
+// };
 
-exports.put_program = function(req, res){
-    return res.send(program1);
-};
+// exports.put_program = function(req, res){
+//     return res.send(program1);
+// };
 
-exports.delete_program = function(req, res){
-    return res.send(program1);
-};
+// exports.delete_program = function(req, res){
+//     return res.send(program1);
+// };
 
 program = function(){
     return { 
@@ -203,6 +203,7 @@ program = function(){
 program1 = new program()
 program2 = new program()
 program2.id = 2
+program2.name = 'Test Program'
 programs = 
     [
         program1,

@@ -39,14 +39,6 @@ html
                     li
                         a
                             p Tracked by: 52
-                    //- li(pid='3', class='selected')
-                    //-     span(class='star program_select')
-                    //-     a
-                    //-         p abc
-                    //- li(pid='3')
-                    //-     span(class='star')
-                    //-     a
-                    //-         p abc
                     li#new_program
                         a
                             img(src='/assets/images/addprogram.png')
@@ -64,7 +56,7 @@ html
                             p(style='float:left; margin-left:10px') 03/12/91
                 !=body    
         script(type='text/template', id='nav_view').
-            <li pid=<%= program.id %> <% if(selected){ %> class='selected' <% } %> >
+            <li <% if(selected){ %> class='selected' <% } %> >
                 <span class='star <% if(isMain){%>main_program<%}%>'></span>
                 <a><p><%= program.name %></p></a>
             </li>
@@ -89,13 +81,10 @@ html
     
     //- views
     script(type='text/javascript', src='/scripts/views/sets/show.js')
-    script(type='text/javascript', src='/scripts/views/sets/edit.js')
     script(type='text/javascript', src='/scripts/views/weights/show.js')
-    script(type='text/javascript', src='/scripts/views/weights/edit.js')
     script(type='text/javascript', src='/scripts/views/splits/show.js')
-    script(type='text/javascript', src='/scripts/views/splits/edit.js')
     script(type='text/javascript', src='/scripts/views/programs/show.js')
-    script(type='text/javascript', src='/scripts/views/programs/edit.js')
+    script(type='text/javascript', src='/scripts/views/programs/list.js')
 
     //- App View and Router
     script(type='text/javascript', src='/scripts/appView.js')
