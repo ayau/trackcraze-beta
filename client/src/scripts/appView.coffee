@@ -3,8 +3,9 @@ class App.AppView extends Backbone.View
     el: $('body')
 
     events: 
-        'click #new_program'        : 'newProgramShow'
-        'click #new_program_submit' : 'newProgramCreate'
+        'click #new_program'         : 'newProgramShow'
+        'click #new_program_submit'  : 'newProgramCreate'
+        'keypress #new_program_name' : 'newProgramOnEnter'
 
     initialize: ->
         _.bindAll @
@@ -21,6 +22,7 @@ class App.AppView extends Backbone.View
 
         # State variables
         @createDisabled = false # prevent multiple duplicate program creation
+        @program_create = false # flag to see if the added program is newly created
 
     render: -> @
 
@@ -28,6 +30,10 @@ class App.AppView extends Backbone.View
         # console.log @programs
         programListView = new App.ProgramListView model: program, selected: program.id == 3, isMain: program.id == 2
         @new_program.before(programListView.render().el)
+        # immediately show program if newly created
+        if @program_create
+            programListView.showProgram()
+            @program_create = false
 
     programReset: ->
         App.contentView = new App.ContentView program: @programs.get(3)
@@ -43,6 +49,7 @@ class App.AppView extends Backbone.View
                 complete: =>
                     @new_program_name.fadeIn()
                     @new_program_submit.fadeIn()
+                    @new_program_name.focus()
 
     newProgramCreate: ->
         if !@createDisabled
@@ -50,7 +57,8 @@ class App.AppView extends Backbone.View
             name = @new_program_name.val()
             name = name.trim();
             if name.split(' ').join('').length > 0
-                console.log @programs.create name: @new_program_name.val()
+                @program_create = true # flag to indicate newly created program
+                App.contentView.updateProgram (@programs.create name: @new_program_name.val()), true
                 duration = 10
             else
                 duration = 400
@@ -65,6 +73,12 @@ class App.AppView extends Backbone.View
                 complete: =>
                     @new_program.removeClass 'selected'
                     @createDisabled = false
+
+    newProgramOnEnter: (e) ->
+        if e.keyCode != 13 
+            return
+        else
+            @newProgramCreate()
 
 #Content level UI
 class App.ContentView extends Backbone.View
@@ -106,9 +120,12 @@ class App.ContentView extends Backbone.View
         $("#content").height $("#nav_left").height() + 80
         @
 
-    updateProgram: (program) ->
+    updateProgram: (program, edit = false) ->
 # TODO save list of programviews created so we don't create multiple views of the same thing
         @program_view = new App.ProgramView model: program, vent: @vent
+        # trigger edit if newly created
+        if edit
+            @vent.trigger 'program_edit'
         @render()
 
     hide_button_container: ->
