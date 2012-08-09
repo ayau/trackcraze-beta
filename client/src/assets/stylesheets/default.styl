@@ -56,6 +56,30 @@ input[type=text]
     border-top 1px solid rgba(0,0,0,0.5)
     border-bottom 1px solid rgba(0,0,0,0.3)
 
+input[type=button]
+    padding 10px
+    font-size mainSize
+    border-radius 5px
+    border-bottom 1px solid rgba(0,0,0,0.5)
+    border-top 1px solid rgba(0,0,0,0.1)
+    border-right 1px solid rgba(0,0,0,0.3)
+    border-left 1px solid rgba(0,0,0,0.3)
+    color lighten(textColor, 40)
+    font-weight bold
+    background linear-gradient(top, paperSecondaryColor, darken(paperSecondaryColor, 2))
+    box-shadow 0px -1px 1px 1px rgba(0,0,0,0.3) inset
+    text-shadow white 0px 1px 0px
+    &:hover
+        color lighten(textColor, 35)
+        background linear-gradient(top, darken(paperSecondaryColor, 4), darken(paperSecondaryColor, 6))
+        cursor pointer
+    &:active
+        color lighten(textColor, 30)
+        background linear-gradient(top, darken(paperSecondaryColor, 7), darken(paperSecondaryColor, 5))
+        border-top 1px solid rgba(0,0,0,0.5)
+        border-bottom 1px solid rgba(0,0,0,0.1)
+        box-shadow 0px 1px 1px 1px rgba(0,0,0,0.3) inset
+
 textarea
     font-family Museo
     font-size mainSize

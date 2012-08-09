@@ -4,14 +4,19 @@ link(rel='stylesheet', href='/assets/stylesheets/programs.css')
 script(type='text/template', id='program_view')
 	.program_name
 		h2 <%= name %>
-		| <input type='text' class='paper_input' value='<%= name %>' />
+		| <input type='text' class='paper_input' value='<%= name %>' placeholder='Program name' />
 	#split_holder
+	.new_split
+		input(type='text', placeholder='New split').paper_input.new_split_name
+		input(type='button', value='create split').new_split_submit
 script(type='text/template', id='split_view')
 	article
 		.split_name
 			p <%= name %>
-			| <input type='text' class='paper_input' value='<%= name %>' />
+			| <input type='text' class='paper_input' value='<%= name %>', placeholder='Split name' />
 		.workout_table
+		.new_exercise
+			input(type='text', placeholder='New exercise').paper_input.new_exercise_name
 script(type='text/template', id='weight_view')
 	table(style='padding:0px')
 		tr

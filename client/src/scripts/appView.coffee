@@ -101,23 +101,20 @@ class App.ContentView extends Backbone.View
         
         # should refactor. ButtonView shouldn't know about window
         $(window).scroll (event) => 
-            y = $(window).scrollTop()
-            if y >= @button_top - 10
-                @button_container.addClass('fixed')
-            else
-                @button_container.removeClass('fixed')
+            @updateButtonContainer()
 
         #hover for button container
-        $("#content").mouseout(@hide_button_container).mouseover(@show_button_container)
-        @button_container.mouseout(@hide_button_container).mouseover(@show_button_container)
+        $("#content").mouseout(@hideButtonContainer).mouseover(@showButtonContainer)
+        @button_container.mouseout(@hideButtonContainer).mouseover(@showButtonContainer)
 
         @render()
 
     render: ->
         # refreshes the content but not the button view
         if @program_view? then $(@el).html(@program_view.el)
-#Make the content stretch to fit 
-        $("#content").height $("#nav_left").height() + 80
+#Make the content stretch to fit. Too weird. it fixes the height. ie height = 446px
+ # $("#content").height $("#nav_left").height() + 80
+        @updateButtonContainer()
         @
 
     updateProgram: (program, edit = false) ->
@@ -128,11 +125,18 @@ class App.ContentView extends Backbone.View
             @vent.trigger 'program_edit'
         @render()
 
-    hide_button_container: ->
+    hideButtonContainer: ->
         @button_container.addClass('hidden')
 
-    show_button_container: ->
+    showButtonContainer: ->
         @button_container.removeClass('hidden')
+
+    updateButtonContainer: ->
+        y = $(window).scrollTop()
+        if y >= @button_top - 10
+            @button_container.addClass('fixed')
+        else
+            @button_container.removeClass('fixed')
 
 
 class App.ButtonView extends Backbone.View
