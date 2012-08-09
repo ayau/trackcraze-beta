@@ -25,6 +25,7 @@
 
 #split_holder
     article
+        clear both
         margin-top 20px
 
         .split_name
@@ -44,29 +45,57 @@
                     display block
 
 .new_split
+    clear both
     margin 20px
     display none
     .new_split_name
+        float left
         font-size 24px
         width 300px
         margin-right 15px
         margin-bottom 10px
     .new_split_submit
+        float left
         width 120px
-        position relative
-        top -3px
+        relative: top -1px
     &.edit
         display block
 
 .new_exercise
+    float left
     margin 20px
     .new_exercise_name
         font-size mainSize
-        width 250px
+        width 240px
         margin-bottom 20px
 
+.new_set
+    float left
+    position relative
+    margin 20px 0px
+    .new_set_weight
+        font-size mainSize
+        width 110px
+        padding-right 50px
+        margin-right 10px
+    .new_set_lbkg
+        width 40px
+        padding-left 8px
+        absolute: top 2px left 66px
+    .new_set_rep
+        margin 0px 10px
+        width 40px
+        text-align center
+        font-size mainSize
+    .new_set_set
+        margin-left 15px
+        margin-right 10px
+        width 40px
+        border-radius 20px
+        text-align center
+
 .workout_table
-    margin-left 20px
+    margin 0px 20px
     td
         vertical-align top
         padding 5px

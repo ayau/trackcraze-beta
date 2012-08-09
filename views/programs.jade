@@ -17,6 +17,15 @@ script(type='text/template', id='split_view')
 		.workout_table
 		.new_exercise
 			input(type='text', placeholder='New exercise').paper_input.new_exercise_name
+		.new_set
+			input(type='text').paper_input.new_set_weight
+			select.paper_select.new_set_lbkg
+				option lbs
+				option kg
+			span x
+			input(type='text', maxlength='2', value='5').paper_input.new_set_rep
+			input(type='text', maxlength='2', value='1').paper_input.new_set_set
+			span sets
 script(type='text/template', id='weight_view')
 	table(style='padding:0px')
 		tr

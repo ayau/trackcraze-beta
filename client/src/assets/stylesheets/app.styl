@@ -169,5 +169,25 @@ input[type=text].paper_input
         color lighten(textColor, 70)
         font-weight normal
 
+.paper_select
+    -webkit-appearance none
+    -moz-appearance none
+    padding 6px
+    font-size mainSize
+    border-radius 5px
+    border-bottom 1px solid rgba(0,0,0,0.5)
+    border-top 1px solid rgba(0,0,0,0.1)
+    border-right 1px solid rgba(0,0,0,0.3)
+    border-left 1px solid rgba(0,0,0,0.3)
+    color lighten(textColor, 40)
+    font-weight bold
+    outline none
+    background linear-gradient(top, paperSecondaryColor, darken(paperSecondaryColor, 2))
+    box-shadow 0px -1px 1px 1px rgba(0,0,0,0.3) inset
+    text-shadow white 0px 1px 0px
+    &:hover
+        color lighten(textColor, 35)
+        background linear-gradient(top, darken(paperSecondaryColor, 4), darken(paperSecondaryColor, 6))
+        cursor pointer
 
 
