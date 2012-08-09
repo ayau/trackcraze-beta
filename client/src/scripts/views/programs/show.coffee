@@ -27,5 +27,5 @@ class App.ProgramView extends Backbone.View
         @program_name ?= @.$('.program_name')
         @program_name.addClass('edit')
         @input ?= @program_name.find('input')
-        @input.focus()
+        # @input.focus()
         @.$('.new_split').addClass('edit')
