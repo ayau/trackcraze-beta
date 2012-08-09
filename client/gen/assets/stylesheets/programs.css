@@ -1,0 +1,266 @@
+@font-face {
+  font-family: Museo;
+  font-style: normal;
+  src: url("/assets/fonts/MuseoSans_500.otf");
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+body {
+  color: #000;
+  font-family: Museo;
+  font-size: 16px;
+  margin: 0px;
+  padding: 0px;
+  text-rendering: optimizeLegibility;
+  background-attachment: fixed;
+}
+p,
+ol,
+ul,
+td {
+  font-size: 16px;
+  line-height: 18px;
+  margin: 0px;
+  padding: 0px;
+}
+ul,
+ol {
+  list-style-type: none;
+}
+a {
+  cursor: pointer;
+}
+label {
+  cursor: pointer;
+}
+input[type=text] {
+  font-family: Museo;
+  width: 280px;
+  height: 40px;
+  padding: 0px 10px;
+  font-size: 16px;
+  border: none;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  border-top: 1px solid rgba(0,0,0,0.5);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+input[type=button] {
+  margin-top: 0px;
+  padding: 8px 10px 12px;
+  font-size: 16px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.3);
+  border-left: 1px solid rgba(0,0,0,0.3);
+  color: #666;
+  font-weight: bold;
+  outline: none;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eaeaea), color-stop(1, #e5e5e5));
+  background: -webkit-linear-gradient(top, #eaeaea 0%, #e5e5e5 100%);
+  background: -moz-linear-gradient(top, #eaeaea 0%, #e5e5e5 100%);
+  background: -o-linear-gradient(top, #eaeaea 0%, #e5e5e5 100%);
+  background: -ms-linear-gradient(top, #eaeaea 0%, #e5e5e5 100%);
+  background: linear-gradient(top, #eaeaea 0%, #e5e5e5 100%);
+  -webkit-box-shadow: 0px -1px 1px 1px rgba(0,0,0,0.3) inset;
+  box-shadow: 0px -1px 1px 1px rgba(0,0,0,0.3) inset;
+  text-shadow: #fff 0px 1px 0px;
+}
+input[type=button]:hover {
+  color: #595959;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e0e0e0), color-stop(1, #dbdbdb));
+  background: -webkit-linear-gradient(top, #e0e0e0 0%, #dbdbdb 100%);
+  background: -moz-linear-gradient(top, #e0e0e0 0%, #dbdbdb 100%);
+  background: -o-linear-gradient(top, #e0e0e0 0%, #dbdbdb 100%);
+  background: -ms-linear-gradient(top, #e0e0e0 0%, #dbdbdb 100%);
+  background: linear-gradient(top, #e0e0e0 0%, #dbdbdb 100%);
+  cursor: pointer;
+}
+input[type=button]:active {
+  margin-top: 2px;
+  padding: 10px;
+  color: #4d4d4d;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d8d8d8), color-stop(1, #ddd));
+  background: -webkit-linear-gradient(top, #d8d8d8 0%, #ddd 100%);
+  background: -moz-linear-gradient(top, #d8d8d8 0%, #ddd 100%);
+  background: -o-linear-gradient(top, #d8d8d8 0%, #ddd 100%);
+  background: -ms-linear-gradient(top, #d8d8d8 0%, #ddd 100%);
+  background: linear-gradient(top, #d8d8d8 0%, #ddd 100%);
+  border-top: none;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  -webkit-box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.3) inset;
+  box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.3) inset;
+}
+textarea {
+  font-family: Museo;
+  font-size: 16px;
+  resize: none;
+}
+.program_name {
+  margin: 25px 0px 10px 20px;
+}
+.program_name h2 {
+  font-size: 28px;
+  text-shadow: rgba(0,0,0,0.2) 1px 1px 1px;
+  font-weight: normal;
+}
+.program_name input {
+  display: none;
+  font-size: 28px;
+  width: 550px;
+}
+.program_name.edit h2 {
+  display: none;
+}
+.program_name.edit input {
+  display: block;
+}
+#split_holder article {
+  clear: both;
+  margin-top: 20px;
+}
+#split_holder article .split_name {
+  margin: 10px 0px 10px 20px;
+}
+#split_holder article .split_name p {
+  font-size: 24px;
+}
+#split_holder article .split_name input {
+  display: none;
+  font-size: 24px;
+  width: 300px;
+}
+#split_holder article .split_name.edit p {
+  display: none;
+}
+#split_holder article .split_name.edit input {
+  display: block;
+}
+.new_split {
+  clear: both;
+  margin: 20px;
+  display: none;
+}
+.new_split .new_split_name {
+  float: left;
+  font-size: 24px;
+  width: 300px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+}
+.new_split .new_split_submit {
+  float: left;
+  width: 120px;
+  position: relative;
+  top: -1px;
+  ((null)): 0;
+}
+.new_split.edit {
+  display: block;
+}
+.new_exercise {
+  float: left;
+  margin: 20px;
+}
+.new_exercise .new_exercise_name {
+  font-size: 16px;
+  width: 240px;
+  margin-bottom: 20px;
+}
+.new_set {
+  float: left;
+  position: relative;
+  margin: 20px 0px;
+}
+.new_set .new_set_weight {
+  font-size: 16px;
+  width: 110px;
+  padding-right: 50px;
+  margin-right: 10px;
+}
+.new_set .new_set_lbkg {
+  width: 40px;
+  padding-left: 8px;
+  position: absolute;
+  top: 2px;
+  left: 66px;
+}
+.new_set .new_set_rep {
+  margin: 0px 10px;
+  width: 40px;
+  text-align: center;
+  font-size: 16px;
+}
+.new_set .new_set_set {
+  margin-left: 15px;
+  margin-right: 10px;
+  width: 40px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  text-align: center;
+}
+.workout_table {
+  margin: 0px 20px;
+}
+.workout_table td {
+  vertical-align: top;
+  padding: 5px;
+}
+.workout_exercise {
+  width: 250px;
+}
+.workout_set {
+  width: 150px;
+}
+.workout_comment {
+  color: #aaa;
+}
+#button_container {
+  background: url("/assets/images/buttons_bg.png");
+  z-index: 3;
+  width: 36px;
+  height: 61px;
+  position: absolute;
+  top: 310px;
+  right: 50%;
+  margin-right: -476px;
+}
+#button_container.fixed {
+  position: fixed;
+  top: 10px;
+  ((null)): 0;
+}
+#button_container.hidden {
+  display: none;
+}
+#button_container .delete {
+  background: url("/assets/images/delete.png");
+  margin-left: 2px;
+  height: 31px;
+  width: 31px;
+}
+#button_container .delete:hover {
+  cursor: pointer;
+  background: url("/assets/images/delete_hover.png");
+}
+#button_container .edit {
+  margin-left: 7px;
+  margin-top: -1px;
+  background: url("/assets/images/edit.png");
+  height: 22px;
+  width: 22px;
+}
+#button_container .edit:hover {
+  cursor: pointer;
+  background: url("/assets/images/edit_hover.png");
+}
