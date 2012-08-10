@@ -61,13 +61,24 @@
     &.edit
         display block
 
+input.exercise_name
+    font-size mainSize
+    width 240px
+
 .new_exercise
-    float left
-    margin 20px
-    .new_exercise_name
-        font-size mainSize
-        width 240px
-        margin-bottom 20px
+    .new_exercise_name, .new_set
+        display none
+    &.edit
+        .new_exercise_name
+            display block
+            float left
+            margin 20px
+            margin-left 27px
+            input
+                margin-bottom 20px
+        .new_set
+            display block
+
 
 .new_set
     float left
@@ -94,6 +105,22 @@
         border-radius 20px
         text-align center
 
+.workout_set
+    width 150px
+    .new_set
+        display none
+    &.edit
+        width 350px
+        padding-left 13px
+        span
+            display none
+        .new_set
+            margin 0px
+            display block
+            span
+                display inline-block
+
+
 .workout_table
     margin 0px 20px
     td
@@ -102,12 +129,18 @@
 
 .workout_exercise
     width 250px
-
-.workout_set
-    width 150px
+    input
+        display none
+    &.edit
+        span
+            display none
+        input
+            display block
 
 .workout_comment
     color secondaryColor
+    &.edit
+        display none
 
 #button_container
     background url("/assets/images/buttons_bg.png")

@@ -1,9 +1,13 @@
 class App.WeightView extends Backbone.View
     template: _.template($("#weight_view").html())
 
-    initialize: ->
+    initialize: (opt)->
         _.bindAll @
-        @model.bind 'change', @render
+
+        # event aggregator
+        @vent = opt.vent
+        @vent.bind 'program_edit', @edit
+
         @render()
 
     render: ->
@@ -13,8 +17,16 @@ class App.WeightView extends Backbone.View
 
     update: ->
         @model.sets.each (set) =>
-            set_view = new App.SetView model: set
+            set_view = new App.SetView model: set, vent: @vent
             if set.get('position') is 1
                 $(@el).find(".workout_exercise").after(set_view.render().el)
             else
                 $(@el).find(".table_break").before(set_view.render().el)
+
+    edit: ->
+        @exercise_name ?= @.$('.workout_exercise')
+        @exercise_name.addClass('edit')
+        @input ?= @.$('.exercise_name').find('input')
+
+        @comment ?= @.$('.workout_comment')
+        @comment.addClass('edit')
