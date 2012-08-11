@@ -103,10 +103,6 @@ class App.ContentView extends Backbone.View
         $(window).scroll (event) => 
             @updateButtonContainer()
 
-        #hover for button container
-        $("#content").mouseout(@hideButtonContainer).mouseover(@showButtonContainer)
-        @button_container.mouseout(@hideButtonContainer).mouseover(@showButtonContainer)
-
         @render()
 
     render: ->
@@ -124,12 +120,6 @@ class App.ContentView extends Backbone.View
         if edit
             @vent.trigger 'program_edit'
         @render()
-
-    hideButtonContainer: ->
-        @button_container.addClass('hidden')
-
-    showButtonContainer: ->
-        @button_container.removeClass('hidden')
 
     updateButtonContainer: ->
         y = $(window).scrollTop()
