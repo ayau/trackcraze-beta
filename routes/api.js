@@ -53,7 +53,7 @@ program = function(){
                             "id": 7,
                             "set": 1,
                             "weight": 160,
-                            "lbkg": 'lbs',
+                            "lbkg": 'kg',
                             "rep": 3,
                             "position": 2
                         }
