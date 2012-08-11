@@ -1,6 +1,10 @@
 class App.ProgramView extends Backbone.View
     template: _.template($("#program_view").html())
 
+    events:
+        'click .new_split_submit': 'newSplitCreate'
+        'keypress .new_split_name': 'newProgramOnEnter'
+
     initialize: (opt)->
         _.bindAll @
 
@@ -10,17 +14,38 @@ class App.ProgramView extends Backbone.View
         @vent = opt.vent
         @vent.bind 'program_edit', @edit
 
+        # @splits = new App.Splits
+        @model.splits.bind 'add', @splitAdd
+        @model.splits.bind 'reset', @splitReset
+
         @render()
+
+# Assuming we recreate the view eveyrtime
+        @splitReset()
 
     render: ->
         @el.innerHTML = @template(@model.toJSON())
-        @update()
-        return @
+        @
 
-    update: ->
-        @model.splits.each (split) =>
-            split_view = new App.SplitView model: split, vent: @vent
-            $(@el).find('#split_holder').append(split_view.render().el)
+    splitAdd: (split) ->
+        split_view = new App.SplitView model: split, vent: @vent
+        $(@el).find('#split_holder').append(split_view.render().el)
+
+    splitReset: ->
+        if @model.splits.length > 0
+            $(@el).find('#split_holder').empty()
+            @model.splits.each @splitAdd
+
+    newSplitCreate: ->
+        @model.splits.create name: @split_name.val()
+        @split_name.val('')
+        @vent.trigger('program_edit')
+
+    newProgramOnEnter: (e)->
+        if e.keyCode != 13 
+            return
+        else
+            @newSplitCreate()
 
     edit: ->
         # caching dom elements
@@ -29,3 +54,6 @@ class App.ProgramView extends Backbone.View
         @input ?= @program_name.find('input')
         # @input.focus()
         @.$('.new_split').addClass('edit')
+        @split_name ?= @.$('.new_split_name')
+
+

@@ -19,14 +19,15 @@ script(type='text/template', id='split_view')
 			.new_exercise_name
 				input(type='text', placeholder='New exercise').paper_input.exercise_name
 			.new_set
-				input(type='text').paper_input.new_set_weight
+				input(type='text', placeholder='150').paper_input.new_set_weight
 				select.paper_select.new_set_lbkg
 					option lbs
 					option kg
 				span x
-				input(type='text', maxlength='2', value='5').paper_input.new_set_rep
-				input(type='text', maxlength='2', value='1').paper_input.new_set_set
-				span sets
+				input(type='text', maxlength='2', value='', placeholder='5').paper_input.new_set_rep
+				input(type='text', maxlength='2', value='1', placeholder='1').paper_input.new_set_set
+				span set
+				input(type='button', value='+').new_set_submit
 script(type='text/template', id='weight_view')
 	table(style='padding:0px')
 		tr.
@@ -44,24 +45,24 @@ script(type='text/template', id='set_view')
 			.new_set
 				| <input type='text' class='paper_input new_set_weight' value='<%= weight %>'/>
 				select.paper_select.new_set_lbkg
-					option lbs
-					option kg
+					option lbs 
+					<% if(lbkg=='kg'){%> <option selected>kg</option> <% }else{ %> <option>kg</option> <% } %>
 				span x
-				input(type='text', maxlength='2', value='5').paper_input.new_set_rep
-				input(type='text', maxlength='2', value='1').paper_input.new_set_set
-				span sets
+				| <input type='text' class='paper_input new_set_rep' maxlength='2' value='<%= rep %>' />
+				| <input type='text' class='paper_input new_set_set' maxlength='2' value='<%= set %>' />
+				| <span>set<%if(set!=1){%>s<%}%></span>
 script(type='text/template', id='set_view_first')
 	td.workout_set 
 		span <%= weight %><%= lbkg %> x <%= rep %> (<%= set %> <%if(set==1){%>set<%}else{%>sets<%}%>)
 		.new_set
 			| <input type='text' class='paper_input new_set_weight' value='<%= weight %>'/>
 			select.paper_select.new_set_lbkg
-				option lbs
-				option kg
+				option lbs 
+				<% if(lbkg=='kg'){%> <option selected>kg</option> <% }else{ %> <option>kg</option> <% } %>
 			span x
-			input(type='text', maxlength='2', value='5').paper_input.new_set_rep
-			input(type='text', maxlength='2', value='1').paper_input.new_set_set
-			span sets
+			| <input type='text' class='paper_input new_set_rep' maxlength='2' value='<%= rep %>' />
+			| <input type='text' class='paper_input new_set_set' maxlength='2' value='<%= set %>' />
+			| <span>set<%if(set!=1){%>s<%}%></span>
 script(type='text/tempalte', id='button_view')
 	#button_container
 		.delete
