@@ -15,6 +15,14 @@
       return this.weights = new App.Weights(this.get('weights'));
     };
 
+    Split.prototype.validate = function(attr) {
+      var name;
+      name = attr.name.trim();
+      if (name.split(' ').join('').length === 0) {
+        return 'Split name must not be empty';
+      }
+    };
+
     return Split;
 
   })(Backbone.Model);

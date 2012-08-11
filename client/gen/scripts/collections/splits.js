@@ -11,6 +11,8 @@
       return Splits.__super__.constructor.apply(this, arguments);
     }
 
+    Splits.prototype.url = '/api/programs';
+
     Splits.prototype.model = App.Split;
 
     return Splits;

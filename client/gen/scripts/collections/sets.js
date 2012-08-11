@@ -11,6 +11,8 @@
       return Sets.__super__.constructor.apply(this, arguments);
     }
 
+    Sets.prototype.url = '/api/programs';
+
     Sets.prototype.model = App.Set;
 
     return Sets;

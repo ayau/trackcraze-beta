@@ -13,9 +13,10 @@
 
     WeightView.prototype.template = _.template($("#weight_view").html());
 
-    WeightView.prototype.initialize = function() {
+    WeightView.prototype.initialize = function(opt) {
       _.bindAll(this);
-      this.model.bind('change', this.render);
+      this.vent = opt.vent;
+      this.vent.bind('program_edit', this.edit);
       return this.render();
     };
 
@@ -30,7 +31,8 @@
       return this.model.sets.each(function(set) {
         var set_view;
         set_view = new App.SetView({
-          model: set
+          model: set,
+          vent: _this.vent
         });
         if (set.get('position') === 1) {
           return $(_this.el).find(".workout_exercise").after(set_view.render().el);
@@ -38,6 +40,21 @@
           return $(_this.el).find(".table_break").before(set_view.render().el);
         }
       });
+    };
+
+    WeightView.prototype.edit = function() {
+      var _ref, _ref1, _ref2;
+      if ((_ref = this.exercise_name) == null) {
+        this.exercise_name = this.$('.workout_exercise');
+      }
+      this.exercise_name.addClass('edit');
+      if ((_ref1 = this.input) == null) {
+        this.input = this.$('.exercise_name').find('input');
+      }
+      if ((_ref2 = this.comment) == null) {
+        this.comment = this.$('.workout_comment');
+      }
+      return this.comment.addClass('edit');
     };
 
     return WeightView;

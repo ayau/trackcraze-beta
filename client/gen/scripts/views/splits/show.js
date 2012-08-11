@@ -15,7 +15,8 @@
 
     SplitView.prototype.initialize = function(opt) {
       _.bindAll(this);
-      return opt.vent.bind('program_edit', this.edit);
+      this.vent = opt.vent;
+      return this.vent.bind('program_edit', this.edit);
     };
 
     SplitView.prototype.render = function() {
@@ -29,19 +30,26 @@
       return this.model.weights.each(function(weight) {
         var weight_view;
         weight_view = new App.WeightView({
-          model: weight
+          model: weight,
+          vent: _this.vent
         });
         return $(_this.el).find(".workout_table").append(weight_view.render().el);
       });
     };
 
     SplitView.prototype.edit = function() {
-      var _ref, _ref1;
+      var _ref, _ref1, _ref2;
       if ((_ref = this.split_name) == null) {
         this.split_name = this.$('.split_name');
       }
       this.split_name.addClass('edit');
-      return (_ref1 = this.input) != null ? _ref1 : this.input = this.$('.split_name').find('input');
+      if ((_ref1 = this.input) == null) {
+        this.input = this.$('.split_name').find('input');
+      }
+      if ((_ref2 = this.new_exercise) == null) {
+        this.new_exercise = this.$('.new_exercise');
+      }
+      return this.new_exercise.addClass('edit');
     };
 
     return SplitView;

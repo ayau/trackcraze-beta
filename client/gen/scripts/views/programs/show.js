@@ -13,34 +13,61 @@
 
     ProgramView.prototype.template = _.template($("#program_view").html());
 
+    ProgramView.prototype.events = {
+      'click .new_split_submit': 'newSplitCreate',
+      'keypress .new_split_name': 'newProgramOnEnter'
+    };
+
     ProgramView.prototype.initialize = function(opt) {
       _.bindAll(this);
       this.model.bind("change", this.render);
       this.vent = opt.vent;
       this.vent.bind('program_edit', this.edit);
-      return this.render();
+      this.model.splits.bind('add', this.splitAdd);
+      this.model.splits.bind('reset', this.splitReset);
+      this.render();
+      return this.splitReset();
     };
 
     ProgramView.prototype.render = function() {
       this.el.innerHTML = this.template(this.model.toJSON());
-      this.update();
       return this;
     };
 
-    ProgramView.prototype.update = function() {
-      var _this = this;
-      return this.model.splits.each(function(split) {
-        var split_view;
-        split_view = new App.SplitView({
-          model: split,
-          vent: _this.vent
-        });
-        return $(_this.el).find('#split_holder').append(split_view.render().el);
+    ProgramView.prototype.splitAdd = function(split) {
+      var split_view;
+      split_view = new App.SplitView({
+        model: split,
+        vent: this.vent
       });
+      return $(this.el).find('#split_holder').append(split_view.render().el);
+    };
+
+    ProgramView.prototype.splitReset = function() {
+      if (this.model.splits.length > 0) {
+        $(this.el).find('#split_holder').empty();
+        return this.model.splits.each(this.splitAdd);
+      }
+    };
+
+    ProgramView.prototype.newSplitCreate = function() {
+      this.model.splits.create({
+        name: this.split_name.val()
+      });
+      this.split_name.val('');
+      return this.vent.trigger('program_edit');
+    };
+
+    ProgramView.prototype.newProgramOnEnter = function(e) {
+      if (e.keyCode !== 13) {
+
+      } else {
+        return this.newSplitCreate();
+      }
     };
 
     ProgramView.prototype.edit = function() {
-      var _ref, _ref1;
+      var _ref, _ref1, _ref2;
       if ((_ref = this.program_name) == null) {
         this.program_name = this.$('.program_name');
       }
@@ -48,8 +75,8 @@
       if ((_ref1 = this.input) == null) {
         this.input = this.program_name.find('input');
       }
-      this.input.focus();
-      return this.$('.new_split').addClass('edit');
+      this.$('.new_split').addClass('edit');
+      return (_ref2 = this.split_name) != null ? _ref2 : this.split_name = this.$('.new_split_name');
     };
 
     return ProgramView;

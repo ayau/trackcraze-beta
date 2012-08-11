@@ -87,8 +87,8 @@ input[type=button]:hover {
   cursor: pointer;
 }
 input[type=button]:active {
-  margin-top: 2px;
-  padding: 10px;
+  margin-top: 1px;
+  padding: 9px 10px 11px;
   color: #4d4d4d;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d8d8d8), color-stop(1, #ddd));
   background: -webkit-linear-gradient(top, #d8d8d8 0%, #ddd 100%);
@@ -168,14 +168,28 @@ textarea {
 .new_split.edit {
   display: block;
 }
-.new_exercise {
-  float: left;
-  margin: 20px;
-}
-.new_exercise .new_exercise_name {
+input.exercise_name {
   font-size: 16px;
   width: 240px;
+}
+.new_exercise .new_exercise_name,
+.new_exercise .new_set {
+  display: none;
+}
+.new_exercise.edit .new_exercise_name {
+  display: block;
+  float: left;
+  margin: 20px;
+  margin-left: 27px;
+}
+.new_exercise.edit .new_exercise_name input {
   margin-bottom: 20px;
+}
+.new_exercise.edit .new_set {
+  display: block;
+}
+.new_exercise.edit .new_set .new_set_set {
+  margin-left: 20px;
 }
 .new_set {
   float: left;
@@ -209,6 +223,29 @@ textarea {
   border-radius: 20px;
   text-align: center;
 }
+.new_set .new_set_submit {
+  margin-left: 20px;
+}
+.workout_set {
+  width: 150px;
+}
+.workout_set .new_set {
+  display: none;
+}
+.workout_set.edit {
+  width: 350px;
+  padding-left: 13px;
+}
+.workout_set.edit span {
+  display: none;
+}
+.workout_set.edit .new_set {
+  margin: 0px;
+  display: block;
+}
+.workout_set.edit .new_set span {
+  display: inline-block;
+}
 .workout_table {
   margin: 0px 20px;
 }
@@ -219,11 +256,20 @@ textarea {
 .workout_exercise {
   width: 250px;
 }
-.workout_set {
-  width: 150px;
+.workout_exercise input {
+  display: none;
+}
+.workout_exercise.edit span {
+  display: none;
+}
+.workout_exercise.edit input {
+  display: block;
 }
 .workout_comment {
   color: #aaa;
+}
+.workout_comment.edit {
+  display: none;
 }
 #button_container {
   background: url("/assets/images/buttons_bg.png");

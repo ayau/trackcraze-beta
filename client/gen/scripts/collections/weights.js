@@ -11,6 +11,8 @@
       return Weights.__super__.constructor.apply(this, arguments);
     }
 
+    Weights.prototype.url = '/api/programs';
+
     Weights.prototype.model = App.Weight;
 
     return Weights;
