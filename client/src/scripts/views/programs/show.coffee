@@ -20,11 +20,10 @@ class App.ProgramView extends Backbone.View
 
         @render()
 
-# Assuming we recreate the view eveyrtime
-        @splitReset()
-
     render: ->
         @el.innerHTML = @template(@model.toJSON())
+# Assuming we recreate the view eveyrtime
+        @splitReset()
         @
 
     splitAdd: (split) ->
