@@ -32,7 +32,7 @@ class App.AppView extends Backbone.View
         @new_program.before(programListView.render().el)
         # immediately show program if newly created
         if @program_create
-            programListView.showProgram()
+            programListView.showProgram true
             @program_create = false
 
     programReset: ->
@@ -58,11 +58,12 @@ class App.AppView extends Backbone.View
             name = name.trim();
             if name.split(' ').join('').length > 0
                 @program_create = true # flag to indicate newly created program
-                App.contentView.updateProgram (@programs.create name: @new_program_name.val()), true
+                if !App.contentView?
+                    App.contentView = new App.ContentView
+                @programs.create name: @new_program_name.val()
                 duration = 10
             else
                 duration = 400
-
             @new_program_name.val ''
             @new_program_name.hide()
             @new_program_submit.hide()
@@ -116,10 +117,9 @@ class App.ContentView extends Backbone.View
     updateProgram: (program, edit = false) ->
 # TODO save list of programviews created so we don't create multiple views of the same thing
         @program_view = new App.ProgramView model: program, vent: @vent
-        # trigger edit if newly created
+        @render()
         if edit
             @vent.trigger 'program_edit'
-        @render()
 
     updateButtonContainer: ->
         y = $(window).scrollTop()

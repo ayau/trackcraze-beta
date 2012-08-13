@@ -4,7 +4,9 @@ path = require 'path'
 option '-w', '--watch', 'watch changes from project and build'
 
 dir = 
-    gen: 'client/gen'
+    gen: 
+        client: 'client/gen'
+        server: 'server/gen'
     assets:
         src: 'client/src/assets/'
         gen: 'client/gen/assets/'
@@ -18,10 +20,38 @@ dir =
     lib:
         src: 'client/src/assets/lib/'
         gen: 'client/gen/assets/lib/'
+    api:
+        src: 'server/src/api/'
+        gen: 'server/gen/api/'
+    views:
+        src: 'server/src/views/'
+        gen: 'server/gen/views/'
+    server:
+        src: 'server/src/'
+        gen: 'server/gen/'
 
 task 'build', 'build project from source', (options) ->
-    exec "rm -rf '#{dir.gen}'" #clear gen folder
-    console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.red}DELETE#{colors.reset}" + " #{dir.gen}"
+
+    exec "rm -rf '#{dir.gen.server}'"
+    console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.red}DELETE#{colors.reset}" + " #{dir.server.gen}"
+
+    # exec "./node_modules/.bin/coffee -co '#{path.dirname dir.server.gen}' '#{path.dirname dir.server.src}'", (err, stdout, stderr) ->
+    #     throw err if err
+    #     console.log stdout + stderr
+    # console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.yellow}COMPILE#{colors.reset}" + " #{dir.server.gen}"
+
+    exec "./node_modules/.bin/coffee -co '#{path.dirname dir.api.gen}' '#{path.dirname dir.api.src}'", (err, stdout, stderr) ->
+        throw err if err
+        # console.log stdout + stderr
+    console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.yellow}COMPILE#{colors.reset}" + " #{dir.server.gen}"
+
+    exec "mkdir -p '#{dir.views.gen}'" #create views directory
+    exec "rsync -av '#{dir.views.src}' '#{dir.views.gen}'"
+    console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.cyan}CREATE#{colors.reset}" + " #{dir.views.gen}"
+
+
+    exec "rm -rf '#{dir.gen.client}'" #clear gen folder
+    console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.red}DELETE#{colors.reset}" + " #{dir.gen.client}"
     exec "mkdir -p '#{dir.assets.gen}'" #create assets directory
     exec "rsync -av --exclude='#{dir.stylesheets.name}' '#{dir.assets.src}' '#{dir.assets.gen}'" #copy assets (excluding stylesheets)
     console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.cyan}CREATE#{colors.reset}" + " #{dir.assets.gen}"
@@ -38,6 +68,24 @@ task 'build', 'build project from source', (options) ->
         console.log stdout + stderr
     console.log "  #{colors.grey}#{(new Date).toLocaleTimeString()} - " + "#{colors.bold.yellow}COMPILE#{colors.reset}" + " #{dir.stylesheets.gen}"
 
+
+task 'run', 'run the app', ->
+    process = spawn 'node', ['server/gen/app.js']
+    process.stdout.setEncoding('utf8')
+    process.stdout.on 'data', (data) ->
+        console.log data
+    process.stderr.setEncoding('utf8')
+    process.stderr.on 'data', (data) ->
+        console.log data
+
+task 'migrate', 'update database', ->
+    process = spawn 'node', ['server/gen/api/migration.js']
+    process.stdout.setEncoding('utf8')
+    process.stdout.on 'data', (data) ->
+        console.log data
+    process.stderr.setEncoding('utf8')
+    process.stderr.on 'data', (data) ->
+        console.log data
 
 #TODO
 # WATCH

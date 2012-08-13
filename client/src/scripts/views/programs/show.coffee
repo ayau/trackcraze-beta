@@ -21,7 +21,7 @@ class App.ProgramView extends Backbone.View
         @render()
 
     render: ->
-        @el.innerHTML = @template(@model.toJSON())
+        @setElement(@template(@model.toJSON()))
 # Assuming we recreate the view eveyrtime
         @splitReset()
         @

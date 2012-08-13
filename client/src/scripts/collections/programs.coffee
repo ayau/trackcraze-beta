@@ -1,5 +1,5 @@
 class App.Programs extends Backbone.Collection
-    url: '/api/programs'
+    url: '/api/me/programs'
     model: App.Program
 
     initialize: ->

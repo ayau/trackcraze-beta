@@ -50,13 +50,18 @@ class App.SplitView extends Backbone.View
         @new_set ?= @.$('.new_set_set')
 
     newExerciseCreate: ->
-        weight = @model.weights.create name: @new_exercise_name.val()
-        weight.sets.create weight: @new_weight.val(), lbkg: @new_lbkg.val(), rep: @new_rep.val(), set: @new_set.val()
-        @new_exercise_name.val('')
-        @new_weight.val('')
-        @new_rep.val('')
-        @new_set.val('')
-        @vent.trigger('program_edit')
+        set_temp = new App.Set weight: @new_weight.val(), lbkg: @new_lbkg.val(), rep: @new_rep.val(), set: @new_set.val()
+        if set_temp.isValid()
+            weight = @model.weights.create name: @new_exercise_name.val()
+            if weight
+                weight.sets.add set_temp
+                @new_exercise_name.val('')
+                @new_weight.val('')
+                @new_rep.val('')
+                @new_set.val('1')
+                @vent.trigger('program_edit')
+                return
+        set_temp.destroy()
 
     removeWeightPlaceholder: ->
         @weightPlaceholder ?= @.$('.new_set_weight').attr('placeholder')
