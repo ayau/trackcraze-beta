@@ -28,7 +28,7 @@ class App.AppView extends Backbone.View
 
     programAdd: (program)->
         # console.log @programs
-        programListView = new App.ProgramListView model: program, selected: program.id == 3, isMain: program.id == 2
+        programListView = new App.ProgramListView model: program, selected: @programs.indexOf(program) == 0, isMain: program.id == 2
         @new_program.before(programListView.render().el)
         # immediately show program if newly created
         if @program_create
@@ -36,7 +36,7 @@ class App.AppView extends Backbone.View
             @program_create = false
 
     programReset: ->
-        App.contentView = new App.ContentView program: @programs.get(3)
+        App.contentView = new App.ContentView program: @programs.at(0) #get first program
         @programs.each @programAdd
 
     newProgramShow: ->

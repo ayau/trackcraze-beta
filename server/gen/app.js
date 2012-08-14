@@ -43,6 +43,8 @@
 
   app.post('/api/me/programs', api.create_me_programs);
 
+  app.put('/api/me/programs/:id', api.edit_program);
+
   port = process.env.PORT || 3000;
 
   app.listen(port, function() {

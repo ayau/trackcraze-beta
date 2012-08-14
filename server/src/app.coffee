@@ -32,6 +32,7 @@ app.get '/programs/:id', routes.programs
 
 app.get '/api/me/programs', api.get_me_programs
 app.post '/api/me/programs', api.create_me_programs
+app.put '/api/me/programs/:id', api.edit_program
 
 
 port = process.env.PORT || 3000

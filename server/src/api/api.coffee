@@ -52,14 +52,20 @@ exports.get_me_programs = (req, res) ->
             res.send(body.rows[0].value)
 
 # POST /me/programs
-exports.create_me_programs = (req, res) ->
+exports.create_me_programs = create_me_programs = (req, res) ->
     # creates a program and add to the user's collection of programs
     db.insert req.body, (err, header, body) ->
         if !err
-            res.send(body)
-            console.log body
+            res.send(header)
+            # console.log body
             console.log '!!!!!!!!!!!!!!!!!'
             console.log header
+
+# PUT /me/programs/:id
+exports.edit_program = (req, res) ->
+    # edits a single program
+    console.log 'PUT REQUEST'
+    create_me_programs(req, res)
 
 
 # GET /programs
@@ -70,10 +76,6 @@ exports.get_programs = (req, res) ->
 # GET /programs/:id
 exports.get_program = (req, res) ->
     # returns a single program
-
-# PUT /programs/:id
-exports.edit_program = (req, res) ->
-    # edits a single program
 
 # DELETE /programs/:id
 exports.delete_program = (req, res) ->

@@ -7,3 +7,5 @@ class App.Split extends Backbone.Model
         name = attr.name.trim()
         if name.split(' ').join('').length == 0
             return 'Split name must not be empty'
+
+    # sync: (method, model)

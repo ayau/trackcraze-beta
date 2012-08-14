@@ -4,6 +4,7 @@ class App.ProgramView extends Backbone.View
     events:
         'click .new_split_submit': 'newSplitCreate'
         'keypress .new_split_name': 'newProgramOnEnter'
+        'click .save_program': 'saveProgram'
 
     initialize: (opt)->
         _.bindAll @
@@ -54,5 +55,14 @@ class App.ProgramView extends Backbone.View
         # @input.focus()
         @.$('.new_split').addClass('edit')
         @split_name ?= @.$('.new_split_name')
+
+    saveProgram: ->
+        console.log 'saving'
+        @model.save {}, 
+            success: (model, res) =>
+                @model.set _rev: res.rev
+                console.log @
+            error: ->
+                console.log 'error saving'
 
 

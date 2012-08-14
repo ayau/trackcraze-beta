@@ -4,7 +4,8 @@ class App.Program extends Backbone.Model
 
     initialize: ->
         # console.log @
-        @splits = new App.Splits @get('splits')
+        @splits = @nestCollection('splits', new App.Splits @get('splits'))
+        # @splits = new App.Splits @get('splits')
         # @fetch()
     # parse: (res) ->
     #     @splits = new Splits res.splits
