@@ -11,6 +11,7 @@ class App.SetView extends Backbone.View
         # event aggregator 
         @vent = opt.vent
         @vent.bind 'program_edit', @edit
+        @vent.bind 'program_delete', @close
 
         @model.bind 'change', @render
         @render()
@@ -32,3 +33,9 @@ class App.SetView extends Backbone.View
             set_input.next().text('sets')
         else
             set_input.next().text('set')
+
+    close: ->
+        @remove()
+        @unbind()
+        if @model
+            @model.destroy()

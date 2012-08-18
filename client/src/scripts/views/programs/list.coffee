@@ -7,15 +7,24 @@ class App.ProgramListView extends Backbone.View
         @render()
 
     events:
-        'click': 'showProgram'
+        'click': 'programSelected'
 
     render: ->
         @setElement(@template({program: @model.toJSON(), selected: @options.selected, isMain: @options.isMain}))
         # @update()
         return @
 
-    showProgram: ->
+    # necessary to separate the event called by jquery 'click' vs method called manually by appView
+    programSelected: ->
+        @showProgram()
+
+    showProgram: (edit = false) ->
         # Better way of doing this = trigger an event to toggle all List
         $(@el).parent().find('li').not('#new_program').removeClass 'selected'
         $(@el).addClass 'selected'
-        App.contentView.updateProgram @model
+        if App.contentView?
+            App.contentView.updateProgram @model, edit
+
+    close: ->
+        @remove()
+        @unbind()

@@ -1,1 +1,1 @@
-web: node app.js
+web: node server/gen/app.js

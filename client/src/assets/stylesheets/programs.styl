@@ -54,7 +54,7 @@
         width 300px
         margin-right 15px
         margin-bottom 10px
-    .new_split_submit
+    .new_exercise_submit
         float left
         width 120px
         relative: top -1px
@@ -66,7 +66,7 @@ input.exercise_name
     width 240px
 
 .new_exercise
-    .new_exercise_name, .new_set
+    .new_exercise_name, .set_edit
         display none
     &.edit
         .new_exercise_name
@@ -76,49 +76,50 @@ input.exercise_name
             margin-left 27px
             input
                 margin-bottom 20px
-        .new_set
+        .set_edit
             display block
             .new_set_set
                 margin-left 20px
 
 
-.new_set
+.set_edit
     float left
     position relative
     margin 20px 0px
-    .new_set_weight
+    .set_weight_edit
         font-size mainSize
         width 110px
         padding-right 50px
         margin-right 10px
-    .new_set_lbkg
+    .set_lbkg_edit
         width 40px
         padding-left 8px
         absolute: top 2px left 66px
-    .new_set_rep
+    .set_rep_edit
         margin 0px 10px
         width 40px
         text-align center
         font-size mainSize
-    .new_set_set
+    .set_set_edit
         margin-left 15px
         margin-right 10px
         width 40px
         border-radius 20px
         text-align center
-    .new_set_submit
+    .new_set_submit, .new_exercise_submit
         margin-left 20px
+        width 40px
 
 .workout_set
     width 150px
-    .new_set
+    .set_edit
         display none
     &.edit
         width 350px
         padding-left 13px
         span
             display none
-        .new_set
+        .set_edit
             margin 0px
             display block
             span
@@ -156,9 +157,6 @@ input.exercise_name
 
     &.fixed
         fixed: top 10px
-
-    &.hidden
-        display none
 
     .delete
         background url('/assets/images/delete.png')

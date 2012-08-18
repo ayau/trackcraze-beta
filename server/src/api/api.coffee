@@ -1,27 +1,98 @@
-//API
+config  = require '../config'
+nano    = require('nano')(config.db.endpoint)
+db      = nano.use config.db.name
+
+###
+    PUT request
+        requires _id and _rev
+        returns rev in header (needs to update in model)
+    POST request
+        returns id and rev
+    GET request
+        returns _id and _rev
+###
 
 
-exports.get_all_programs = function (req, res){
-    return res.send(programs);
-}
+# GET /
+exports.login = (req, res) ->
+    # handles log in with email/password, facebook
 
-// exports.get_program = function(req, res){
-// 	return res.send(program1);
-// };
 
-// exports.post_program = function(req, res){
-//     return res.send(program1);
-// };
+# GET /users
+exports.get_users = (req, res) ->
+    # retrieves all users
 
-// exports.put_program = function(req, res){
-//     return res.send(program1);
-// };
+# GET /users/:id
+exports.get_user = (req, res) ->
+    # retrieving a user
 
-// exports.delete_program = function(req, res){
-//     return res.send(program1);
-// };
+# POST /users
+exports.create_user = (req, res) ->
+    # creating a user
 
-program = function(){
+
+# GET /me
+exports.get_me = (req, res) ->
+    # returns an authenticated user
+
+# GET /me/programs
+exports.get_me_programs = (req, res) ->
+    # returns an authenticated user's programs
+    db.view 'programs', 'list', (err, body) ->
+        if !err && body.rows.length > 0
+            console.log body
+            # console.log body.rows[0].value
+            # program = body.rows[0].value
+            programs = []
+            for r in body.rows
+                program = r.value
+                program['id'] = program['_id']
+                program['rev'] = program['_rev']
+                programs.push program
+            res.send programs
+        else
+            res.send(err)
+
+# POST /me/programs
+exports.create_me_programs = create_me_programs = (req, res) ->
+    # creates a program and add to the user's collection of programs
+    db.insert req.body, (err, header, body) ->
+        if !err
+            # console.log body
+            console.log 'POST PROGRAM'
+            console.log header
+            res.send(header)
+
+# PUT /me/programs/:id
+# edits a single program
+exports.edit_program = (req, res) ->
+    console.log 'PUT PROGRAM'
+    create_me_programs(req, res)
+
+exports.delete_program = (req, res) ->
+    console.log 'DELETING PROGRAM'
+    db.destroy req.params.id, req.headers['if-match'], (err, body) ->
+        if !err
+            console.log body
+            res.send body
+        else
+            console.log err
+
+
+# GET /programs
+exports.get_programs = (req, res) ->
+    # return all programs
+    # return res.send(programs);
+
+# GET /programs/:id
+exports.get_program = (req, res) ->
+    # returns a single program
+
+
+
+
+
+program = ->
     return { 
     "created_at" : "2012-07-10 10:24:03",
     "id" : 3,
@@ -196,9 +267,7 @@ program = function(){
                 }
             ]
         }
-    ]
-};
-}
+    ]}
 
 program1 = new program()
 program2 = new program()

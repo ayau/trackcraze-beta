@@ -14,6 +14,9 @@ class App.AppView extends Backbone.View
         @programs = new App.Programs
         @programs.bind 'reset', @programReset
         @programs.bind 'add', @programAdd
+        @programs.bind 'remove', @programReset
+
+        @programListViews = [] # collection of program list item views in nav sidebar
 
         # cached dom elements
         @new_program        = $('#new_program')
@@ -27,17 +30,31 @@ class App.AppView extends Backbone.View
     render: -> @
 
     programAdd: (program)->
-        # console.log @programs
-        programListView = new App.ProgramListView model: program, selected: program.id == 3, isMain: program.id == 2
+        programListView = new App.ProgramListView model: program, selected: @programs.indexOf(program) == 0, isMain: program.id == 2
+        @programListViews.push programListView
         @new_program.before(programListView.render().el)
         # immediately show program if newly created
         if @program_create
-            programListView.showProgram()
+            programListView.showProgram true
             @program_create = false
 
     programReset: ->
-        App.contentView = new App.ContentView program: @programs.get(3)
+        # remove existing views
+        for programListView in @programListViews
+            programListView.close()
+        @programListViews = []
+        if App.contentView?
+            if @programs.at(0)?
+                App.contentView.updateProgram(@programs.at(0))
+        else
+            App.contentView = new App.ContentView program: @programs.at(0) #get first program
         @programs.each @programAdd
+
+        # Adjusts the height of content after programlistview refreshes
+        if $('#content').height() < $("#nav_left").height() + 80
+            $("#content").height $("#nav_left").height() + 80
+        else
+            $('#content').height $('#content').css('minHeight')
 
     newProgramShow: ->
         if !@new_program.hasClass 'selected'
@@ -58,11 +75,15 @@ class App.AppView extends Backbone.View
             name = name.trim();
             if name.split(' ').join('').length > 0
                 @program_create = true # flag to indicate newly created program
-                App.contentView.updateProgram (@programs.create name: @new_program_name.val()), true
+                if !App.contentView?
+                    App.contentView = new App.ContentView
+                @programs.create name: @new_program_name.val()
+                    # success: (model, res) ->
+                    #     model.set id: model.id
+                    #     console.log model #######################
                 duration = 10
             else
                 duration = 400
-
             @new_program_name.val ''
             @new_program_name.hide()
             @new_program_submit.hide()
@@ -80,6 +101,7 @@ class App.AppView extends Backbone.View
         else
             @newProgramCreate()
 
+
 #Content level UI
 class App.ContentView extends Backbone.View
     el: $ '#content_holder'
@@ -89,6 +111,7 @@ class App.ContentView extends Backbone.View
         _.bindAll @
 
         if @options.program?
+            @program = @options.program
             @program_view = new App.ProgramView model: @options.program, vent: @vent #not the order but the id of the program
 
         # ButtonView
@@ -103,33 +126,23 @@ class App.ContentView extends Backbone.View
         $(window).scroll (event) => 
             @updateButtonContainer()
 
-        #hover for button container
-        $("#content").mouseout(@hideButtonContainer).mouseover(@showButtonContainer)
-        @button_container.mouseout(@hideButtonContainer).mouseover(@showButtonContainer)
-
         @render()
 
     render: ->
         # refreshes the content but not the button view
         if @program_view? then $(@el).html(@program_view.el)
-#Make the content stretch to fit. Too weird. it fixes the height. ie height = 446px
- # $("#content").height $("#nav_left").height() + 80
         @updateButtonContainer()
         @
 
     updateProgram: (program, edit = false) ->
 # TODO save list of programviews created so we don't create multiple views of the same thing
+        @program = program
+        if @program_view?
+            @program_view.close()
         @program_view = new App.ProgramView model: program, vent: @vent
-        # trigger edit if newly created
+        @render()
         if edit
             @vent.trigger 'program_edit'
-        @render()
-
-    hideButtonContainer: ->
-        @button_container.addClass('hidden')
-
-    showButtonContainer: ->
-        @button_container.removeClass('hidden')
 
     updateButtonContainer: ->
         y = $(window).scrollTop()
@@ -138,10 +151,23 @@ class App.ContentView extends Backbone.View
         else
             @button_container.removeClass('fixed')
 
+    getProgram: ->
+        @program
+
+    getProgramView: ->
+        @program_view
+
+    close: ->
+        @remove()
+        @unbind()
+
 
 class App.ButtonView extends Backbone.View
     template: _.template($("#button_view").html())
-    events: 'click .edit': 'edit'
+    events: 
+        'click .edit'   : 'edit'
+        'click .delete' : 'delete'
+
 
     initialize: (opt)->
         _.bindAll @
@@ -154,5 +180,13 @@ class App.ButtonView extends Backbone.View
 
     edit: ->
         @vent.trigger 'program_edit'
+    
+    delete: ->
+        program = App.contentView.getProgram()
+        name = program.get('name')
+        r = confirm "You sure you want to delete '" + name + "'?"
+        if r
+            @vent.trigger 'program_delete'
+            # App.appView.programRemove(program)
 
 
