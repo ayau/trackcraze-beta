@@ -23,6 +23,7 @@
       _.bindAll(this);
       this.vent = opt.vent;
       this.vent.bind('program_edit', this.edit);
+      this.vent.bind('program_delete', this.close);
       this.model.bind('change', this.render);
       return this.render();
     };
@@ -51,6 +52,14 @@
         return set_input.next().text('sets');
       } else {
         return set_input.next().text('set');
+      }
+    };
+
+    SetView.prototype.close = function() {
+      this.remove();
+      this.unbind();
+      if (this.model) {
+        return this.model.destroy();
       }
     };
 

@@ -15,6 +15,13 @@
 
     Splits.prototype.model = App.Split;
 
+    Splits.prototype.destroy = function() {
+      return this.each(function(model) {
+        model.weights.destroy();
+        return model.destroy();
+      });
+    };
+
     return Splits;
 
   })(Backbone.Collection);

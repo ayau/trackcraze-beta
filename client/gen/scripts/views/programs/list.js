@@ -19,7 +19,7 @@
     };
 
     ProgramListView.prototype.events = {
-      'click': 'showProgram'
+      'click': 'programSelected'
     };
 
     ProgramListView.prototype.render = function() {
@@ -31,10 +31,24 @@
       return this;
     };
 
-    ProgramListView.prototype.showProgram = function() {
+    ProgramListView.prototype.programSelected = function() {
+      return this.showProgram();
+    };
+
+    ProgramListView.prototype.showProgram = function(edit) {
+      if (edit == null) {
+        edit = false;
+      }
       $(this.el).parent().find('li').not('#new_program').removeClass('selected');
       $(this.el).addClass('selected');
-      return App.contentView.updateProgram(this.model);
+      if (App.contentView != null) {
+        return App.contentView.updateProgram(this.model, edit);
+      }
+    };
+
+    ProgramListView.prototype.close = function() {
+      this.remove();
+      return this.unbind();
     };
 
     return ProgramListView;

@@ -11,8 +11,21 @@
       return Weight.__super__.constructor.apply(this, arguments);
     }
 
+    Weight.prototype.defaults = {
+      sets: [],
+      comment: ''
+    };
+
     Weight.prototype.initialize = function() {
-      return this.sets = new App.Sets(this.get('sets'));
+      return this.sets = this.nestCollection('sets', new App.Sets(this.get('sets')));
+    };
+
+    Weight.prototype.validate = function(attr) {
+      var name;
+      name = attr.name.trim();
+      if (name.split(' ').join('').length === 0) {
+        return 'Exercise name must not be empty';
+      }
     };
 
     return Weight;

@@ -24,6 +24,8 @@
       this.programs = new App.Programs;
       this.programs.bind('reset', this.programReset);
       this.programs.bind('add', this.programAdd);
+      this.programs.bind('remove', this.programReset);
+      this.programListViews = [];
       this.new_program = $('#new_program');
       this.new_program_name = $('#new_program_name');
       this.new_program_submit = $('#new_program_submit');
@@ -39,21 +41,40 @@
       var programListView;
       programListView = new App.ProgramListView({
         model: program,
-        selected: program.id === 3,
+        selected: this.programs.indexOf(program) === 0,
         isMain: program.id === 2
       });
+      this.programListViews.push(programListView);
       this.new_program.before(programListView.render().el);
       if (this.program_create) {
-        programListView.showProgram();
+        programListView.showProgram(true);
         return this.program_create = false;
       }
     };
 
     AppView.prototype.programReset = function() {
-      App.contentView = new App.ContentView({
-        program: this.programs.get(3)
-      });
-      return this.programs.each(this.programAdd);
+      var programListView, _i, _len, _ref;
+      _ref = this.programListViews;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        programListView = _ref[_i];
+        programListView.close();
+      }
+      this.programListViews = [];
+      if (App.contentView != null) {
+        if (this.programs.at(0) != null) {
+          App.contentView.updateProgram(this.programs.at(0));
+        }
+      } else {
+        App.contentView = new App.ContentView({
+          program: this.programs.at(0)
+        });
+      }
+      this.programs.each(this.programAdd);
+      if ($('#content').height() < $("#nav_left").height() + 80) {
+        return $("#content").height($("#nav_left").height() + 80);
+      } else {
+        return $('#content').height($('#content').css('minHeight'));
+      }
     };
 
     AppView.prototype.newProgramShow = function() {
@@ -85,9 +106,12 @@
         name = name.trim();
         if (name.split(' ').join('').length > 0) {
           this.program_create = true;
-          App.contentView.updateProgram(this.programs.create({
+          if (!(App.contentView != null)) {
+            App.contentView = new App.ContentView;
+          }
+          this.programs.create({
             name: this.new_program_name.val()
-          }), true);
+          });
           duration = 10;
         } else {
           duration = 400;
@@ -138,6 +162,7 @@
       var _this = this;
       _.bindAll(this);
       if (this.options.program != null) {
+        this.program = this.options.program;
         this.program_view = new App.ProgramView({
           model: this.options.program,
           vent: this.vent
@@ -152,8 +177,6 @@
       $(window).scroll(function(event) {
         return _this.updateButtonContainer();
       });
-      $("#content").mouseout(this.hideButtonContainer).mouseover(this.showButtonContainer);
-      this.button_container.mouseout(this.hideButtonContainer).mouseover(this.showButtonContainer);
       return this.render();
     };
 
@@ -169,22 +192,18 @@
       if (edit == null) {
         edit = false;
       }
+      this.program = program;
+      if (this.program_view != null) {
+        this.program_view.close();
+      }
       this.program_view = new App.ProgramView({
         model: program,
         vent: this.vent
       });
+      this.render();
       if (edit) {
-        this.vent.trigger('program_edit');
+        return this.vent.trigger('program_edit');
       }
-      return this.render();
-    };
-
-    ContentView.prototype.hideButtonContainer = function() {
-      return this.button_container.addClass('hidden');
-    };
-
-    ContentView.prototype.showButtonContainer = function() {
-      return this.button_container.removeClass('hidden');
     };
 
     ContentView.prototype.updateButtonContainer = function() {
@@ -195,6 +214,19 @@
       } else {
         return this.button_container.removeClass('fixed');
       }
+    };
+
+    ContentView.prototype.getProgram = function() {
+      return this.program;
+    };
+
+    ContentView.prototype.getProgramView = function() {
+      return this.program_view;
+    };
+
+    ContentView.prototype.close = function() {
+      this.remove();
+      return this.unbind();
     };
 
     return ContentView;
@@ -212,7 +244,8 @@
     ButtonView.prototype.template = _.template($("#button_view").html());
 
     ButtonView.prototype.events = {
-      'click .edit': 'edit'
+      'click .edit': 'edit',
+      'click .delete': 'delete'
     };
 
     ButtonView.prototype.initialize = function(opt) {
@@ -228,6 +261,16 @@
 
     ButtonView.prototype.edit = function() {
       return this.vent.trigger('program_edit');
+    };
+
+    ButtonView.prototype["delete"] = function() {
+      var name, program, r;
+      program = App.contentView.getProgram();
+      name = program.get('name');
+      r = confirm("You sure you want to delete '" + name + "'?");
+      if (r) {
+        return this.vent.trigger('program_delete');
+      }
     };
 
     return ButtonView;

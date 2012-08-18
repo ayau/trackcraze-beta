@@ -158,7 +158,7 @@ textarea {
   margin-right: 15px;
   margin-bottom: 10px;
 }
-.new_split .new_split_submit {
+.new_split .new_exercise_submit {
   float: left;
   width: 120px;
   position: relative;
@@ -173,7 +173,7 @@ input.exercise_name {
   width: 240px;
 }
 .new_exercise .new_exercise_name,
-.new_exercise .new_set {
+.new_exercise .set_edit {
   display: none;
 }
 .new_exercise.edit .new_exercise_name {
@@ -185,37 +185,37 @@ input.exercise_name {
 .new_exercise.edit .new_exercise_name input {
   margin-bottom: 20px;
 }
-.new_exercise.edit .new_set {
+.new_exercise.edit .set_edit {
   display: block;
 }
-.new_exercise.edit .new_set .new_set_set {
+.new_exercise.edit .set_edit .new_set_set {
   margin-left: 20px;
 }
-.new_set {
+.set_edit {
   float: left;
   position: relative;
   margin: 20px 0px;
 }
-.new_set .new_set_weight {
+.set_edit .set_weight_edit {
   font-size: 16px;
   width: 110px;
   padding-right: 50px;
   margin-right: 10px;
 }
-.new_set .new_set_lbkg {
+.set_edit .set_lbkg_edit {
   width: 40px;
   padding-left: 8px;
   position: absolute;
   top: 2px;
   left: 66px;
 }
-.new_set .new_set_rep {
+.set_edit .set_rep_edit {
   margin: 0px 10px;
   width: 40px;
   text-align: center;
   font-size: 16px;
 }
-.new_set .new_set_set {
+.set_edit .set_set_edit {
   margin-left: 15px;
   margin-right: 10px;
   width: 40px;
@@ -223,13 +223,15 @@ input.exercise_name {
   border-radius: 20px;
   text-align: center;
 }
-.new_set .new_set_submit {
+.set_edit .new_set_submit,
+.set_edit .new_exercise_submit {
   margin-left: 20px;
+  width: 40px;
 }
 .workout_set {
   width: 150px;
 }
-.workout_set .new_set {
+.workout_set .set_edit {
   display: none;
 }
 .workout_set.edit {
@@ -239,11 +241,11 @@ input.exercise_name {
 .workout_set.edit span {
   display: none;
 }
-.workout_set.edit .new_set {
+.workout_set.edit .set_edit {
   margin: 0px;
   display: block;
 }
-.workout_set.edit .new_set span {
+.workout_set.edit .set_edit span {
   display: inline-block;
 }
 .workout_table {
@@ -285,9 +287,6 @@ input.exercise_name {
   position: fixed;
   top: 10px;
   ((null)): 0;
-}
-#button_container.hidden {
-  display: none;
 }
 #button_container .delete {
   background: url("/assets/images/delete.png");

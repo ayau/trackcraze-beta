@@ -13,32 +13,49 @@
 
     SplitView.prototype.template = _.template($("#split_view").html());
 
+    SplitView.prototype.events = {
+      'click .new_exercise_submit': 'newExerciseCreate',
+      'focus .new_set_weight': 'removeWeightPlaceholder',
+      'blur .new_set_weight': 'addWeightPlaceholder',
+      'focus .new_set_rep': 'removeRepPlaceholder',
+      'blur .new_set_rep': 'addRepPlaceholder',
+      'focus .new_set_set': 'removeSetPlaceholder',
+      'blur .new_set_set': 'addSetPlaceholder'
+    };
+
     SplitView.prototype.initialize = function(opt) {
       _.bindAll(this);
       this.vent = opt.vent;
-      return this.vent.bind('program_edit', this.edit);
+      this.vent.bind('program_edit', this.edit);
+      this.vent.bind('program_delete', this.close);
+      this.model.weights.bind('add', this.weightAdd);
+      return this.model.weights.bind('reset', this.weightReset);
     };
 
     SplitView.prototype.render = function() {
       this.setElement(this.template(this.model.toJSON()));
-      this.update();
+      this.weightReset();
       return this;
     };
 
-    SplitView.prototype.update = function() {
-      var _this = this;
-      return this.model.weights.each(function(weight) {
-        var weight_view;
-        weight_view = new App.WeightView({
-          model: weight,
-          vent: _this.vent
-        });
-        return $(_this.el).find(".workout_table").append(weight_view.render().el);
+    SplitView.prototype.weightAdd = function(weight) {
+      var weight_view;
+      weight_view = new App.WeightView({
+        model: weight,
+        vent: this.vent
       });
+      return $(this.el).find('.workout_table').append(weight_view.render().el);
+    };
+
+    SplitView.prototype.weightReset = function() {
+      if (this.model.weights.length > 0) {
+        $(this.el).find('.workout_table').empty();
+        return this.model.weights.each(this.weightAdd);
+      }
     };
 
     SplitView.prototype.edit = function() {
-      var _ref, _ref1, _ref2;
+      var _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
       if ((_ref = this.split_name) == null) {
         this.split_name = this.$('.split_name');
       }
@@ -49,7 +66,90 @@
       if ((_ref2 = this.new_exercise) == null) {
         this.new_exercise = this.$('.new_exercise');
       }
-      return this.new_exercise.addClass('edit');
+      this.new_exercise.addClass('edit');
+      if ((_ref3 = this.new_exercise_name) == null) {
+        this.new_exercise_name = this.new_exercise.find('.exercise_name');
+      }
+      if ((_ref4 = this.new_weight) == null) {
+        this.new_weight = this.$('.new_set_weight');
+      }
+      if ((_ref5 = this.new_lbkg) == null) {
+        this.new_lbkg = this.$('.new_set_lbkg');
+      }
+      if ((_ref6 = this.new_rep) == null) {
+        this.new_rep = this.$('.new_set_rep');
+      }
+      return (_ref7 = this.new_set) != null ? _ref7 : this.new_set = this.$('.new_set_set');
+    };
+
+    SplitView.prototype.newExerciseCreate = function() {
+      var set_temp, weight;
+      set_temp = new App.Set({
+        weight: this.new_weight.val(),
+        lbkg: this.new_lbkg.val(),
+        rep: this.new_rep.val(),
+        set: this.new_set.val()
+      });
+      if (set_temp.isValid()) {
+        weight = this.model.weights.create({
+          name: this.new_exercise_name.val()
+        });
+        if (weight) {
+          weight.sets.add(set_temp);
+          this.new_exercise_name.val('');
+          this.new_weight.val('');
+          this.new_rep.val('');
+          this.new_set.val('1');
+          this.vent.trigger('program_edit');
+          return;
+        }
+      }
+      return set_temp.destroy();
+    };
+
+    SplitView.prototype.removeWeightPlaceholder = function() {
+      var _ref;
+      if ((_ref = this.weightPlaceholder) == null) {
+        this.weightPlaceholder = this.$('.new_set_weight').attr('placeholder');
+      }
+      return this.$('.new_set_weight').attr('placeholder', '');
+    };
+
+    SplitView.prototype.addWeightPlaceholder = function() {
+      return this.$('.new_set_weight').attr('placeholder', this.weightPlaceholder);
+    };
+
+    SplitView.prototype.removeRepPlaceholder = function() {
+      var _ref;
+      if ((_ref = this.repPlaceholder) == null) {
+        this.repPlaceholder = this.$('.new_set_rep').attr('placeholder');
+      }
+      return this.$('.new_set_rep').attr('placeholder', '');
+    };
+
+    SplitView.prototype.addRepPlaceholder = function() {
+      return this.$('.new_set_rep').attr('placeholder', this.repPlaceholder);
+    };
+
+    SplitView.prototype.removeSetPlaceholder = function() {
+      var _ref;
+      if ((_ref = this.setPlaceholder) == null) {
+        this.setPlaceholder = this.$('.new_set_set').attr('placeholder');
+      }
+      return this.$('.new_set_set').attr('placeholder', '');
+    };
+
+    SplitView.prototype.addSetPlaceholder = function() {
+      return this.$('.new_set_set').attr('placeholder', this.setPlaceholder);
+    };
+
+    SplitView.prototype.close = function() {
+      this.remove();
+      this.unbind();
+      if (this.model) {
+        this.model.weights.destroy();
+        return this.model.destroy();
+      }
     };
 
     return SplitView;

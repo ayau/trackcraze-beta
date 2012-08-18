@@ -12,6 +12,8 @@ db      = nano.use config.db.name
         returns _id and _rev
 ###
 
+exports.get_test_programs = (req, res) ->
+    res.send programs
 
 # GET /
 exports.login = (req, res) ->

@@ -19,6 +19,10 @@
   */
 
 
+  exports.get_test_programs = function(req, res) {
+    return res.send(programs);
+  };
+
   exports.login = function(req, res) {};
 
   exports.get_users = function(req, res) {};

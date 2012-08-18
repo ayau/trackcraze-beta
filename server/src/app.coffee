@@ -35,6 +35,8 @@ app.post '/api/me/programs', api.create_me_programs
 app.put '/api/me/programs/:id', api.edit_program
 app.delete '/api/me/programs/:id', api.delete_program
 
+app.get '/api/test/programs', api.get_test_programs
+
 
 port = process.env.PORT || 3000
 app.listen port, ->

@@ -47,6 +47,8 @@
 
   app["delete"]('/api/me/programs/:id', api.delete_program);
 
+  app.get('/api/test/programs', api.get_test_programs);
+
   port = process.env.PORT || 3000;
 
   app.listen(port, function() {

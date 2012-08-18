@@ -11,12 +11,10 @@
       return Program.__super__.constructor.apply(this, arguments);
     }
 
-    Program.prototype.initialize = function() {
-      return this.splits = new App.Splits(this.get('splits'));
-    };
+    Program.prototype.urlRoot = '/api/me/programs';
 
-    Program.prototype.clear = function() {
-      return this.destroy();
+    Program.prototype.initialize = function() {
+      return this.splits = this.nestCollection('splits', new App.Splits(this.get('splits')));
     };
 
     return Program;

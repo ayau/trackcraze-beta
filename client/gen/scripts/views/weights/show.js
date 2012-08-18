@@ -17,29 +17,36 @@
       _.bindAll(this);
       this.vent = opt.vent;
       this.vent.bind('program_edit', this.edit);
+      this.vent.bind('program_delete', this.close);
+      this.model.sets.bind('add', this.setAdd);
+      this.model.sets.bind('reset', this.setReset);
       return this.render();
     };
 
     WeightView.prototype.render = function() {
       this.setElement(this.template(this.model.toJSON()));
-      this.update();
+      this.setReset();
       return this;
     };
 
-    WeightView.prototype.update = function() {
-      var _this = this;
-      return this.model.sets.each(function(set) {
-        var set_view;
-        set_view = new App.SetView({
-          model: set,
-          vent: _this.vent
-        });
-        if (set.get('position') === 1) {
-          return $(_this.el).find(".workout_exercise").after(set_view.render().el);
-        } else {
-          return $(_this.el).find(".table_break").before(set_view.render().el);
-        }
+    WeightView.prototype.setAdd = function(set) {
+      var set_view;
+      set_view = new App.SetView({
+        model: set,
+        vent: this.vent
       });
+      if (set.get('position') === 1) {
+        return $(this.el).find(".workout_exercise").after(set_view.render().el);
+      } else {
+        return $(this.el).find(".table_break").before(set_view.render().el);
+      }
+    };
+
+    WeightView.prototype.setReset = function() {
+      if (this.model.sets.length > 0) {
+        $(this.el).find('.workout_set').remove();
+        return this.model.sets.each(this.setAdd);
+      }
     };
 
     WeightView.prototype.edit = function() {
@@ -55,6 +62,15 @@
         this.comment = this.$('.workout_comment');
       }
       return this.comment.addClass('edit');
+    };
+
+    WeightView.prototype.close = function() {
+      this.remove();
+      this.unbind();
+      if (this.model) {
+        this.model.sets.destroy();
+        return this.model.destroy();
+      }
     };
 
     return WeightView;

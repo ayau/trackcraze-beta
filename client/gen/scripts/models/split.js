@@ -12,7 +12,7 @@
     }
 
     Split.prototype.initialize = function() {
-      return this.weights = new App.Weights(this.get('weights'));
+      return this.weights = this.nestCollection('weights', new App.Weights(this.get('weights')));
     };
 
     Split.prototype.validate = function(attr) {

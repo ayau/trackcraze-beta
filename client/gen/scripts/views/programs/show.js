@@ -15,22 +15,24 @@
 
     ProgramView.prototype.events = {
       'click .new_split_submit': 'newSplitCreate',
-      'keypress .new_split_name': 'newProgramOnEnter'
+      'keypress .new_split_name': 'newProgramOnEnter',
+      'click .save_program': 'saveProgram'
     };
 
     ProgramView.prototype.initialize = function(opt) {
       _.bindAll(this);
-      this.model.bind("change", this.render);
       this.vent = opt.vent;
       this.vent.bind('program_edit', this.edit);
+      this.vent.bind('program_delete', this["delete"]);
       this.model.splits.bind('add', this.splitAdd);
       this.model.splits.bind('reset', this.splitReset);
-      this.render();
-      return this.splitReset();
+      return this.render();
     };
 
     ProgramView.prototype.render = function() {
-      this.el.innerHTML = this.template(this.model.toJSON());
+      this.setElement(this.template(this.model.toJSON()));
+      this.splitReset();
+      this.delegateEvents();
       return this;
     };
 
@@ -77,6 +79,48 @@
       }
       this.$('.new_split').addClass('edit');
       return (_ref2 = this.split_name) != null ? _ref2 : this.split_name = this.$('.new_split_name');
+    };
+
+    ProgramView.prototype.saveProgram = function() {
+      var _this = this;
+      console.log('saving');
+      this.model.set({
+        _rev: this.model.get('rev')
+      });
+      this.model.set({
+        _id: this.model.get('id')
+      });
+      return this.model.save({}, {
+        success: function(model, res) {
+          return _this.model.set({
+            rev: res.rev
+          });
+        },
+        error: function() {
+          return console.log('error saving');
+        }
+      });
+    };
+
+    ProgramView.prototype["delete"] = function() {
+      return this.model.destroy({
+        headers: {
+          'If-Match': this.model.get('rev')
+        },
+        success: function(model, res) {
+          return console.log(res);
+        },
+        error: function() {
+          return console.log('error');
+        }
+      });
+    };
+
+    ProgramView.prototype.close = function() {
+      this.remove();
+      this.unbind();
+      this.vent.unbind();
+      return this.model.splits.unbind();
     };
 
     return ProgramView;

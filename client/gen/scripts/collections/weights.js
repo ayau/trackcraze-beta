@@ -15,6 +15,13 @@
 
     Weights.prototype.model = App.Weight;
 
+    Weights.prototype.destroy = function() {
+      return this.each(function(model) {
+        model.sets.destroy();
+        return model.destroy();
+      });
+    };
+
     return Weights;
 
   })(Backbone.Collection);

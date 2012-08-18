@@ -11,7 +11,7 @@
       return Programs.__super__.constructor.apply(this, arguments);
     }
 
-    Programs.prototype.url = '/api/programs';
+    Programs.prototype.url = '/api/me/programs';
 
     Programs.prototype.model = App.Program;
 

@@ -11,7 +11,23 @@
       return Set.__super__.constructor.apply(this, arguments);
     }
 
+    Set.prototype.defaults = {
+      position: 1
+    };
+
     Set.prototype.initialize = function() {};
+
+    Set.prototype.validate = function(attr) {
+      if (isNaN(parseInt(attr.weight)) || parseInt(attr.weight) < 1) {
+        return 'weight needs to be a number greater than 0';
+      }
+      if (isNaN(parseInt(attr.rep)) || parseInt(attr.rep) < 1) {
+        return 'reps needs to be a number greater than 0';
+      }
+      if (isNaN(parseInt(attr.set)) || parseInt(attr.set) < 1) {
+        return 'sets needs to be a number greater than 0';
+      }
+    };
 
     return Set;
 

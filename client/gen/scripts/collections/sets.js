@@ -15,6 +15,12 @@
 
     Sets.prototype.model = App.Set;
 
+    Sets.prototype.destroy = function() {
+      return this.each(function(model) {
+        return model.destroy();
+      });
+    };
+
     return Sets;
 
   })(Backbone.Collection);
