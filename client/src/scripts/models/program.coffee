@@ -1,4 +1,5 @@
 class App.Program extends Backbone.Model
+    urlRoot: '/api/me/programs'
     # urlRoot: '/api/programs/3'
     # splits: new App.Splits
 
@@ -11,7 +12,3 @@ class App.Program extends Backbone.Model
     #     @splits = new Splits res.splits
     #     res.splits = @splits #Duplicated?
     #     return res
-
-    # Remove from localStorage and delete view
-    clear: ->
-      @destroy()

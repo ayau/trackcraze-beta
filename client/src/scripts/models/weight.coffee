@@ -5,7 +5,7 @@ class App.Weight extends Backbone.Model
         comment: ''
 
     initialize: ->
-        @sets = new App.Sets @get('sets')
+        @sets = @nestCollection('sets', new App.Sets @get('sets'))
 
     validate: (attr) ->
         name = attr.name.trim()

@@ -24,3 +24,7 @@ class App.ProgramListView extends Backbone.View
         $(@el).addClass 'selected'
         if App.contentView?
             App.contentView.updateProgram @model, edit
+
+    close: ->
+        @remove()
+        @unbind()

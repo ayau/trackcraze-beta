@@ -45,6 +45,8 @@
 
   app.put('/api/me/programs/:id', api.edit_program);
 
+  app["delete"]('/api/me/programs/:id', api.delete_program);
+
   port = process.env.PORT || 3000;
 
   app.listen(port, function() {

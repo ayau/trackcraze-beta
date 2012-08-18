@@ -2,22 +2,15 @@ config  = require '../config'
 nano    = require('nano')(config.db.endpoint)
 db      = nano.use config.db.name
 
-# db: 
-#     create: [Function: create_db],
-#     get: [Function: get_db],
-#     destroy: [Function: destroy_db],
-#     list: [Function: list_dbs],
-#     use: [Function: document_module],
-#     scope: [Function: document_module],
-#     compact: [Function: compact_db],
-#     replicate: [Function: replicate_db],
-#     changes: [Function: changes_db] },
-# use: [Function: document_module],
-# scope: [Function: document_module],
-# request: [Function: relax],
-# config: { url: 'http://localhost:5984' },
-# relax: [Function: relax],
-# dinosaur: [Function: relax] }
+###
+    PUT request
+        requires _id and _rev
+        returns rev in header (needs to update in model)
+    POST request
+        returns id and rev
+    GET request
+        returns _id and _rev
+###
 
 
 # GET /
@@ -46,26 +39,44 @@ exports.get_me = (req, res) ->
 exports.get_me_programs = (req, res) ->
     # returns an authenticated user's programs
     db.view 'programs', 'list', (err, body) ->
-        if !err
+        if !err && body.rows.length > 0
             console.log body
-            console.log body.rows[0].value
-            res.send(body.rows[0].value)
+            # console.log body.rows[0].value
+            # program = body.rows[0].value
+            programs = []
+            for r in body.rows
+                program = r.value
+                program['id'] = program['_id']
+                program['rev'] = program['_rev']
+                programs.push program
+            res.send programs
+        else
+            res.send(err)
 
 # POST /me/programs
 exports.create_me_programs = create_me_programs = (req, res) ->
     # creates a program and add to the user's collection of programs
     db.insert req.body, (err, header, body) ->
         if !err
-            res.send(header)
             # console.log body
-            console.log '!!!!!!!!!!!!!!!!!'
+            console.log 'POST PROGRAM'
             console.log header
+            res.send(header)
 
 # PUT /me/programs/:id
+# edits a single program
 exports.edit_program = (req, res) ->
-    # edits a single program
-    console.log 'PUT REQUEST'
+    console.log 'PUT PROGRAM'
     create_me_programs(req, res)
+
+exports.delete_program = (req, res) ->
+    console.log 'DELETING PROGRAM'
+    db.destroy req.params.id, req.headers['if-match'], (err, body) ->
+        if !err
+            console.log body
+            res.send body
+        else
+            console.log err
 
 
 # GET /programs
@@ -77,9 +88,6 @@ exports.get_programs = (req, res) ->
 exports.get_program = (req, res) ->
     # returns a single program
 
-# DELETE /programs/:id
-exports.delete_program = (req, res) ->
-    # deletes a single program
 
 
 

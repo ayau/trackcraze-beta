@@ -8,6 +8,17 @@
 
   db = nano.use(config.db.name);
 
+  /*
+      PUT request
+          requires _id and _rev
+          returns rev in header (needs to update in model)
+      POST request
+          returns id and rev
+      GET request
+          returns _id and _rev
+  */
+
+
   exports.login = function(req, res) {};
 
   exports.get_users = function(req, res) {};
@@ -20,10 +31,21 @@
 
   exports.get_me_programs = function(req, res) {
     return db.view('programs', 'list', function(err, body) {
-      if (!err) {
+      var program, programs, r, _i, _len, _ref;
+      if (!err && body.rows.length > 0) {
         console.log(body);
-        console.log(body.rows[0].value);
-        return res.send(body.rows[0].value);
+        programs = [];
+        _ref = body.rows;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          r = _ref[_i];
+          program = r.value;
+          program['id'] = program['_id'];
+          program['rev'] = program['_rev'];
+          programs.push(program);
+        }
+        return res.send(programs);
+      } else {
+        return res.send(err);
       }
     });
   };
@@ -31,23 +53,33 @@
   exports.create_me_programs = create_me_programs = function(req, res) {
     return db.insert(req.body, function(err, header, body) {
       if (!err) {
-        res.send(header);
-        console.log('!!!!!!!!!!!!!!!!!');
-        return console.log(header);
+        console.log('POST PROGRAM');
+        console.log(header);
+        return res.send(header);
       }
     });
   };
 
   exports.edit_program = function(req, res) {
-    console.log('PUT REQUEST');
+    console.log('PUT PROGRAM');
     return create_me_programs(req, res);
+  };
+
+  exports.delete_program = function(req, res) {
+    console.log('DELETING PROGRAM');
+    return db.destroy(req.params.id, req.headers['if-match'], function(err, body) {
+      if (!err) {
+        console.log(body);
+        return res.send(body);
+      } else {
+        return console.log(err);
+      }
+    });
   };
 
   exports.get_programs = function(req, res) {};
 
   exports.get_program = function(req, res) {};
-
-  exports.delete_program = function(req, res) {};
 
   program = function() {
     return {

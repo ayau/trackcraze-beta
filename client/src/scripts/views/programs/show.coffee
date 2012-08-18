@@ -9,11 +9,13 @@ class App.ProgramView extends Backbone.View
     initialize: (opt)->
         _.bindAll @
 
-        @model.bind "change", @render
+        # @model.bind "change", @render  #This removes events when it rerenders. Tried to solve with delegateEvents but didn't work.
+        # temporary solution
         
         # event aggregator
         @vent = opt.vent
         @vent.bind 'program_edit', @edit
+        @vent.bind 'program_delete', @delete
 
         # @splits = new App.Splits
         @model.splits.bind 'add', @splitAdd
@@ -25,6 +27,7 @@ class App.ProgramView extends Backbone.View
         @setElement(@template(@model.toJSON()))
 # Assuming we recreate the view eveyrtime
         @splitReset()
+        @delegateEvents()
         @
 
     splitAdd: (split) ->
@@ -58,11 +61,32 @@ class App.ProgramView extends Backbone.View
 
     saveProgram: ->
         console.log 'saving'
+        @model.set _rev: @model.get 'rev'
+        @model.set _id: @model.get 'id'
         @model.save {}, 
             success: (model, res) =>
-                @model.set _rev: res.rev
-                console.log @
+                @model.set rev: res.rev
             error: ->
                 console.log 'error saving'
+
+    delete: ->
+        # @model.set id: @model.get('_id')  # for destroying purposes
+        @model.destroy
+            headers: 
+                'If-Match': @model.get('rev')
+            success: (model, res) ->
+                console.log res
+            error: ->
+                console.log 'error'
+
+    close: ->
+        @remove()
+        @unbind()
+        @vent.unbind()
+        @model.splits.unbind()
+
+
+
+
 
 

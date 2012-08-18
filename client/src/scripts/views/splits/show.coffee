@@ -16,6 +16,7 @@ class App.SplitView extends Backbone.View
         # event aggregator
         @vent = opt.vent
         @vent.bind 'program_edit', @edit
+        @vent.bind 'program_delete', @close
 
         @model.weights.bind 'add', @weightAdd
         @model.weights.bind 'reset', @weightReset
@@ -83,3 +84,10 @@ class App.SplitView extends Backbone.View
 
     addSetPlaceholder: ->
         @.$('.new_set_set').attr('placeholder', @setPlaceholder)
+
+    close: ->
+        @remove()
+        @unbind()
+        if @model
+            @model.weights.destroy()
+            @model.destroy()

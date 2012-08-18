@@ -7,6 +7,7 @@ class App.WeightView extends Backbone.View
         # event aggregator
         @vent = opt.vent
         @vent.bind 'program_edit', @edit
+        @vent.bind 'program_delete', @close
 
         @model.sets.bind 'add', @setAdd
         @model.sets.bind 'reset', @setReset
@@ -38,3 +39,10 @@ class App.WeightView extends Backbone.View
 
         @comment ?= @.$('.workout_comment')
         @comment.addClass('edit')
+
+     close: ->
+        @remove()
+        @unbind()
+        if @model
+            @model.sets.destroy()
+            @model.destroy()
