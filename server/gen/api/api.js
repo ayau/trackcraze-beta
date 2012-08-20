@@ -36,7 +36,7 @@
   exports.get_me_programs = function(req, res) {
     return db.view('programs', 'list', function(err, body) {
       var program, programs, r, _i, _len, _ref;
-      if (!err && body.rows.length > 0) {
+      if (!err && (body.rows != null)) {
         console.log(body);
         programs = [];
         _ref = body.rows;
@@ -45,6 +45,8 @@
           program = r.value;
           program['id'] = program['_id'];
           program['rev'] = program['_rev'];
+          delete program['_id'];
+          delete program['_rev'];
           programs.push(program);
         }
         return res.send(programs);

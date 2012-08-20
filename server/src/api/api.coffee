@@ -41,7 +41,7 @@ exports.get_me = (req, res) ->
 exports.get_me_programs = (req, res) ->
     # returns an authenticated user's programs
     db.view 'programs', 'list', (err, body) ->
-        if !err && body.rows.length > 0
+        if !err && body.rows?
             console.log body
             # console.log body.rows[0].value
             # program = body.rows[0].value
@@ -50,6 +50,8 @@ exports.get_me_programs = (req, res) ->
                 program = r.value
                 program['id'] = program['_id']
                 program['rev'] = program['_rev']
+                delete program['_id']
+                delete program['_rev']
                 programs.push program
             res.send programs
         else
