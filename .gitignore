@@ -1,3 +1,4 @@
 node_modules/
 client/gen/
+server/gen/
 .DS_Store
