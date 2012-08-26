@@ -2,6 +2,18 @@
 (function() {
 
   module.exports = {
+    users: {
+      _id: '_design/users',
+      views: {
+        facebook: {
+          map: function(doc) {
+            if (doc.type === 'user') {
+              return emit(doc.fb_id, doc);
+            }
+          }
+        }
+      }
+    },
     programs: {
       _id: '_design/programs',
       views: {
