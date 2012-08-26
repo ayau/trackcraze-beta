@@ -12,28 +12,108 @@ db      = nano.use config.db.name
         returns _id and _rev
 ###
 
+###
+User
+{
+    type       : "user"
+    id         : (id for couchdb)
+    rev        : (rev for couchdb)
+    fb_id      : (facebook id)
+    first_name : (first name)
+    last_name  : (last name)
+    gender     : (male/female/undisclosed)
+    programs   : [{
+                    id   : (facebook_id)
+                    name : (program name)
+                  }]
+}
 
-# GET /
-exports.login = (req, res) ->
-    # handles log in with email/password, facebook
+Program
+{
+    type         : "program"
+    id           : (id from couchdb)
+    rev          : (rev for couchdb)
+    created_at   : (2012-07-10 10:24:03)
+    main_program : true
+    name         : (name of program)
+    privacy      : (privacy)
+    user_id      : (owner)
+    splits : [
+        {
+            id        : (unused but required by backbone)
+            name      : (name of split)
+            position  : (position)
+            weights   : [
+                {
+                    id        : (unused)
+                    name      : (Exercise name)
+                    position  : (position)
+                    comment   : (comment on exercise)
+                    sets      : [
+                        {
+                            id        : (unused)
+                            set       : (number of sets)
+                            weight    : (weight in lbs)
+                            lbkg      : (what client prefers to display as)
+                            rep       : (number of reps)
+                            position  : (position)
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+###
 
+# handles log in with email/password, facebook
+exports.login = (fb, callback) ->
+    id = fb.id
+    db.view 'users', 'facebook', {key: id}, (err, body) ->
+        if !err
+            console.log body
+            if body.rows.length is 0
+                user = 
+                    fb_id       : id
+                    first_name  : fb.first_name
+                    last_name   : fb.last_name
+                    gender      : if fb.gender is 'male' or fb.gender is'female' then fb.gender else 'undisclosed'
+                return create_user user, callback
+            else
+                user = body.rows[0].value
+                user.id = user._id
+                user.rev = user._rev
+                delete user._id
+                delete user._rev
+                return callback null, user
+        else
+            return callback err, null
 
-# GET /users
-exports.get_users = (req, res) ->
-    # retrieves all users
+# only supports fb log in
+create_user = (user, callback) ->
+    if user? && user.fb_id?
+        user.type = 'user'  # ensures type is user 
+        user.programs = []      
+        db.insert user, (err, header, body) ->
+            if !err
+                console.log 'USER CREATED'
+                console.log header
+                if header.ok is true
+                    user.id = header.id
+                    user.rev = header.rev
+                    return callback null, user
+            else
+                return callback err, null
+    else
+        return callback 'error: invalid parameters for user', null
 
-# GET /users/:id
-exports.get_user = (req, res) ->
-    # retrieving a user
-
-# POST /users
-exports.create_user = (req, res) ->
-    # creating a user
-
+#-------------------------ME-------------------------#
+# (Authentication required)
 
 # GET /me
 exports.get_me = (req, res) ->
     # returns an authenticated user
+    res.send req.user
 
 # GET /me/programs
 exports.get_me_programs = (req, res) ->
@@ -57,6 +137,7 @@ exports.get_me_programs = (req, res) ->
 
 # POST /me/programs
 exports.create_me_programs = create_me_programs = (req, res) ->
+    #  req body can have garbage fields
     # creates a program and add to the user's collection of programs
     db.insert req.body, (err, header, body) ->
         if !err
@@ -71,6 +152,7 @@ exports.edit_program = (req, res) ->
     console.log 'PUT PROGRAM'
     create_me_programs(req, res)
 
+# DELETE /me/programs/:id
 exports.delete_program = (req, res) ->
     console.log 'DELETING PROGRAM'
     db.destroy req.params.id, req.headers['if-match'], (err, body) ->
@@ -80,9 +162,10 @@ exports.delete_program = (req, res) ->
         else
             console.log err
 
+#-----------------------PUBLIC-----------------------#
 
 # GET /programs
-exports.get_programs = (req, res) ->
+# exports.get_programs = (req, res) ->
     # return all programs
     # return res.send(programs);
 
@@ -90,9 +173,36 @@ exports.get_programs = (req, res) ->
 exports.get_program = (req, res) ->
     # returns a single program
 
+# GET /users
+# exports.get_users = (req, res) ->
+    # retrieves all users
 
+# GET /users/:id
+# exports.get_user = (req, res) ->
+    # retrieving a user
 
+# GET /dummy/me
+exports.dummy_me = (req, res) ->
+    user = 
+        "fb_id": "519585436"
+        "first_name": "Alex"
+        "last_name": "Yau"
+        "gender": "male"
+        "type": "user"
+        "programs": [{
+                "id": 123
+                "name": "test 1"
+            },{
+                "id": 234
+                "name": "test 2"
+                }]
+        "id": "355acca351433cfc7ffd885a310002e1"
+        "rev": "1-cf990fed71f8d86203f2c0163e7dbe9a"
+    res.send user
 
+# GET /dummy/programs
+exports.dummy_programs = (req, res) ->
+    res.send programs
 
 program = ->
     return { 

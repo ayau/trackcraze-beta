@@ -2,3 +2,5 @@ node_modules/
 client/gen/
 server/gen/
 .DS_Store
+*.sublime-project
+*.sublime-workspace
