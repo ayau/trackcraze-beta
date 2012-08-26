@@ -29,7 +29,7 @@ update_design = (doc) ->
     db.get doc._id, (err, body) ->
         if !err
             doc._rev = body._rev
-        doc = trim(doc)
+        doc = trimHelper(doc)
         db.insert doc, (err, body, header) ->
             if !err
                 console.log '%s successfully updated', doc._id 
@@ -39,12 +39,19 @@ update_design = (doc) ->
                 return false
 
 # helper to convert mapreduce functions to string and remove \n and \t
-trim = (doc) ->
+trimHelper = (doc) ->
     for name, mapreduce of doc.views
         map = mapreduce.map #doc[name].map
         reduce = mapreduce.reduce #doc[name].reduce
         if map?
-            doc.views[name].map = map.toString().replace /(\r\n|\n|\r)/gm, ''
+            doc.views[name].map = trim map
         if reduce?
-            doc.views[name].reduce = reduce.toString().replace /(\r\n|\n|\r)/gm, ''
+            doc.views[name].reduce = trim reduce
+
+    for name, update of doc.updates
+        doc.updates[name] = trim update
+
     return doc
+
+trim = (string) ->
+    string.toString().replace /(\r\n|\n|\r)/gm, ''
