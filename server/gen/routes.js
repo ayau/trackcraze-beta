@@ -2,18 +2,35 @@
 (function() {
 
   exports.index = function(req, res) {
-    return res.render('index', {
-      title: 'Express'
-    });
+    return res.render('index');
   };
 
-  exports.programs = function(req, res) {
+  exports.program = function(req, res) {
     var id;
     id = req.params.id;
     return res.render('programs', {
       title: 'Express',
-      layout: 'layout'
+      layout: 'layout',
+      program: id
     });
+  };
+
+  exports.me_program = function(req, res) {
+    var id, user;
+    if (req.user != null) {
+      user = req.user;
+      id = 0;
+      if (user.programs.length > 0) {
+        id = user.programs[0].id;
+      }
+      return res.render('programs', {
+        title: 'Express',
+        layout: 'layout',
+        program: id
+      });
+    } else {
+      return res.redirect('/');
+    }
   };
 
 }).call(this);

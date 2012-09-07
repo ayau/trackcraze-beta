@@ -11,12 +11,11 @@ html
     body
         header
             center(style='position:relative; top:10px')
-                a(href='/program/')
+                a(href='/programs')
                     h1 trackCraze
                     p BETA
                 input#search(type='text', placeholder='Search trackCraze', autocomplete='off')
-                a.logout(onclick='FB.logout()') Log out
-        div#fb-root
+                a.logout(href='/logout') Log out
         #container
             nav#nav_left
                 ul

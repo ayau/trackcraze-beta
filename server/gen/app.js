@@ -28,7 +28,7 @@
       return console.log(user);
     });
     return userPromise;
-  }).redirectPath('/');
+  }).redirectPath('/programs');
 
   everyauth.everymodule.findUserById(function(req, userId, callback) {
     return callback(null, sessions[userId]);
@@ -72,7 +72,9 @@
 
   app.get('/', routes.index);
 
-  app.get('/programs/:id', routes.programs);
+  app.get('/programs', routes.me_program);
+
+  app.get('/programs/:id', routes.program);
 
   app.get('/api/dummy/me', api.dummy_me);
 
@@ -80,13 +82,15 @@
 
   app.get('/api/me', authenticate, api.get_me);
 
-  app.get('/api/me/programs', api.get_me_programs);
+  app.get('/api/me/programs', authenticate, api.get_me_programs);
 
-  app.post('/api/me/programs', api.create_me_programs);
+  app.get('/api/me/programs/:id', authenticate, api.get_me_program);
 
-  app.put('/api/me/programs/:id', api.edit_program);
+  app.post('/api/me/programs', authenticate, api.create_me_programs);
 
-  app["delete"]('/api/me/programs/:id', api.delete_program);
+  app.put('/api/me/programs/:id', authenticate, api.edit_program);
+
+  app["delete"]('/api/me/programs/:id', authenticate, api.delete_program);
 
   app.get('/api/test/programs', api.get_test_programs);
 

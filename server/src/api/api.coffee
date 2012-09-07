@@ -114,12 +114,25 @@ create_user = (user, callback) ->
 # GET /me
 exports.get_me = (req, res) ->
     # returns an authenticated user
-    res.send req.user
+    # res.send req.user # might be stale
+    id = req.user.id
+    db.get id, {}, (err, body) ->
+        if !err
+            console.log 'GET ME'
+            user = body
+            user.id = user._id
+            user.rev = user._rev
+            delete user._id
+            delete user._rev
+            res.send user
+        else
+            res.send err
 
 # GET /me/programs
 exports.get_me_programs = (req, res) ->
+    me = req.user.id
     # returns an authenticated user's programs
-    db.view 'programs', 'list', (err, body) ->
+    db.view 'programs', 'list', {key: me}, (err, body) ->
         if !err && body.rows?
             console.log body
             # console.log body.rows[0].value
@@ -134,35 +147,91 @@ exports.get_me_programs = (req, res) ->
                 programs.push program
             res.send programs
         else
-            res.send(err)
+            res.send err
+
+# GET /me/programs/:id
+exports.get_me_program = (req, res) ->
+    me = req.user.id
+    id = req.params.id
+    db.get id, {}, (err, body) ->
+        if !err
+            console.log 'GET PROGRAM'
+            program = body
+            if program.user_id is me
+                program.id = program._id
+                program.rev = program._rev
+                delete program._id
+                delete program._rev
+                res.send programs
+            else
+                res.send 403 # forbidden
+        else
+            res.send err
 
 # POST /me/programs
-exports.create_me_programs = create_me_programs = (req, res) ->
-    #  req body can have garbage fields
+exports.create_me_programs = (req, res) ->
+    # req body can have garbage fields (need to validate)
     # creates a program and add to the user's collection of programs
-    db.insert req.body, (err, header, body) ->
+    me = req.user.id
+    program = req.body
+    program.type = 'program'
+    program.user_id = me
+    program.created_at = new Date().getTime()
+    db.insert program, (err, header, body) ->
         if !err
             # console.log body
             console.log 'POST PROGRAM'
             console.log header
-            res.send(header)
+            program.id = header.id
+            program.rev = header.rev
+            db.atomic 'users', 'add_program', me,
+            {id: program.id, name: program.name}, (err, response) ->
+                if !err
+                    console.log 'ADDED TO USER'
+                    res.send program
+                    console.log program
+                else
+                    res.send err
+        else
+            res.send err
 
 # PUT /me/programs/:id
 # edits a single program
 exports.edit_program = (req, res) ->
     console.log 'PUT PROGRAM'
-    create_me_programs(req, res)
+    me = req.user.id
+    program = req.body
+    db.insert program, (err, header, body) ->
+        if !err
+            # console.log body
+            console.log header
+            program.id = header.id
+            program.rev = header.rev
+            res.send program
+        else
+            res.send err
 
 # DELETE /me/programs/:id
 exports.delete_program = (req, res) ->
     console.log 'DELETING PROGRAM'
-    db.destroy req.params.id, req.headers['if-match'], (err, body) ->
-        if !err
-            console.log body
-            res.send body
-        else
-            console.log err
+    me = req.user.id
+    id = req.params.id
 
+    db.atomic 'users', 'remove_program', me,
+    {id: id}, (err, response) ->
+        if !err
+            console.log response
+            console.log 'removed from user'
+            db.destroy id, req.headers['if-match'], (err, body) ->
+                if !err
+                    console.log body
+                    res.send body
+                else
+                    res.send err
+        else
+            res.send err
+
+    
 #-----------------------PUBLIC-----------------------#
 
 # GET /programs

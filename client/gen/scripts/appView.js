@@ -71,9 +71,7 @@
       }
       this.programs.each(this.programAdd);
       if ($('#content').height() < $("#nav_left").height() + 80) {
-        return $("#content").height($("#nav_left").height() + 80);
-      } else {
-        return $('#content').height($('#content').css('minHeight'));
+        return $("#content").css('minHeight', $("#nav_left").height() + 80);
       }
     };
 

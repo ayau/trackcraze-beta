@@ -52,10 +52,8 @@ class App.AppView extends Backbone.View
 
         # Adjusts the height of content after programlistview refreshes
         if $('#content').height() < $("#nav_left").height() + 80
-            $("#content").height $("#nav_left").height() + 80
-        else
-            $('#content').height $('#content').css('minHeight')
-
+            $("#content").css('minHeight', $("#nav_left").height() + 80)
+        
     newProgramShow: ->
         if !@new_program.hasClass 'selected'
             @new_program.addClass 'selected'

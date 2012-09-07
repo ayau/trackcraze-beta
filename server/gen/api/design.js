@@ -12,6 +12,50 @@
             }
           }
         }
+      },
+      updates: {
+        add_program: function(doc, req) {
+          var body, id, name, programs, _ref, _ref1;
+          if (doc.type === 'user') {
+            body = JSON.parse(req.body);
+            id = (_ref = body.id) != null ? _ref : '';
+            name = (_ref1 = body.name) != null ? _ref1 : '';
+            programs = doc.programs;
+            if (!(programs != null)) {
+              programs = [];
+            }
+            programs.push({
+              id: id,
+              name: name
+            });
+            return [doc, 'success'];
+          } else {
+            return [doc, 'error'];
+          }
+        },
+        remove_program: function(doc, req) {
+          var body, i, id, programs;
+          if (doc.type === 'user') {
+            body = JSON.parse(req.body);
+            id = body.id;
+            programs = doc.programs;
+            if (!(programs != null)) {
+              return [doc, 'program does not exist'];
+            }
+            if (!(id != null)) {
+              return [doc, 'id is null'];
+            }
+            for (i in programs) {
+              if (programs[i].id === id) {
+                programs.splice(i, 1);
+                return [doc, 'success'];
+              }
+            }
+            return [doc, 'no program found'];
+          } else {
+            return [doc, 'error'];
+          }
+        }
       }
     },
     programs: {
@@ -19,7 +63,9 @@
       views: {
         list: {
           map: function(doc) {
-            return emit(doc._id, doc);
+            if (doc.type === 'program') {
+              return emit(doc.user_id, doc);
+            }
           }
         }
       }
